@@ -33,6 +33,7 @@
     "@hapi/joi": "^15.1.1",
     "@hapi/wreck": "^15.1.0",
     "defra-logging-facade": "git+https://github.com/DEFRA/defra-logging-facade.git#master",
+    "ivory-shared": "git+https://github.com/DEFRA/ivory-shared.git#master",
     "lodash": "^4.17.15"
   }
 }
