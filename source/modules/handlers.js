@@ -1,4 +1,4 @@
-const { utils } = require('ivory-shared')
+const { utils } = require('ivory-shared/lib')
 
 module.exports = class Handlers {
   get maxFreeTextLength () {
@@ -36,7 +36,7 @@ module.exports = class Handlers {
     const viewName = await this.getViewName(request)
     const viewData = await this.getViewData(request)
     const isQuestionPage = await this.getIsQuestionPage(request)
-    const { fieldName } = this
+    const { fieldname } = this
     if (errors) {
       Object.assign(viewData, request.payload)
     }
@@ -45,7 +45,7 @@ module.exports = class Handlers {
     return h.view(viewName, {
       pageHeading,
       isQuestionPage,
-      fieldName,
+      fieldname,
       viewData,
       errors,
       errorList

@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi')
 const chooseAddressHint = 'Choose an address'
 
-class AddressSelectHandlers extends require('../handlers') {
+class AddressSelectHandlers extends require('../../handlers') {
   get schema () {
     return Joi.object({
       address: Joi.string().min(1).required()

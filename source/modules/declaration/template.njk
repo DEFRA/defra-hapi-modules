@@ -1,9 +1,10 @@
-{% extends 'common/two-thirds-layout.njk' %}
-
 {% from "checkboxes/macro.njk" import govukCheckboxes %}
 {% from "textarea/macro.njk" import govukTextarea %}
 
-{% block formContent %}
+{% set viewData = params.viewData %}
+{% set pageHeading = params.pageHeading %}
+{% set isQuestionPage = params.isQuestionPage %}
+{% set errors = params.errors %}
 
   {{ govukCheckboxes({
     idPrefix: "declaration",
@@ -37,5 +38,3 @@
       spellcheck: "false"
     }
   }) }}
-
-{% endblock %}

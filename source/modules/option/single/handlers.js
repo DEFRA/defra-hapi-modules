@@ -1,11 +1,13 @@
 const Joi = require('@hapi/joi')
-const { Registration } = require('../../../lib/cache')
-const config = require('../../../config')
-const { referenceData } = config
 
-class SelectOneOptionHandlers extends require('../handlers') {
+class SingleOptionHandlers extends require('../../handlers') {
+  constructor ({ referenceData }) {
+    super()
+    this._referenceData = referenceData[this.fieldname] || {}
+  }
+
   get referenceData () {
-    return referenceData[this.fieldName] || {}
+    return this._referenceData
   }
 
   get choices () {
@@ -22,24 +24,24 @@ class SelectOneOptionHandlers extends require('../handlers') {
   get schema () {
     const validValues = this.items.map(({ value }) => value)
     return {
-      [this.fieldName]: Joi.string().valid(...validValues).required()
+      [this.fieldname]: Joi.string().valid(...validValues).required()
     }
   }
 
   get errorMessages () {
     return {
-      [this.fieldName]: {
+      [this.fieldname]: {
         'any.required': this.selectError
       }
     }
   }
 
   async getData (request) {
-    return await Registration.get(request) || {}
+    return await this.Model.get(request) || {}
   }
 
   async setData (request, registration) {
-    return Registration.set(request, registration)
+    return this.Model.set(request, registration)
   }
 
   errorLink (field) {
@@ -59,7 +61,7 @@ class SelectOneOptionHandlers extends require('../handlers') {
           value: value.toString(),
           text,
           hint: hint ? { text: hint } : undefined,
-          checked: storedValue === data[this.fieldName]
+          checked: storedValue === data[this.fieldname]
         }
       })
     }
@@ -70,15 +72,15 @@ class SelectOneOptionHandlers extends require('../handlers') {
   async handlePost (request, h) {
     const data = await this.getData(request)
     const choice = this.choices.find(({ shortName }) => {
-      return request.payload[this.fieldName] === shortName
+      return request.payload[this.fieldname] === shortName
     })
-    if (this.onChange && data[this.fieldName] !== choice.value) {
+    if (this.onChange && data[this.fieldname] !== choice.value) {
       await this.onChange(data)
     }
-    data[this.fieldName] = choice.value
+    data[this.fieldname] = choice.value
     await this.setData(request, data)
     return super.handlePost(request, h)
   }
 }
 
-module.exports = SelectOneOptionHandlers
+module.exports = SingleOptionHandlers

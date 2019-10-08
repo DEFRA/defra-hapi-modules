@@ -1,17 +1,31 @@
 const Joi = require('@hapi/joi')
-const { AddressLookUp } = require('ivory-shared')
-const config = require('../../../config')
+const AddressLookUp = require('ivory-shared/lib').AddressLookUp
 
-const {
-  addressLookUpUri: uri,
-  addressLookUpUsername: username,
-  addressLookUpPassword: password,
-  addressLookUpKey: key
-} = config
+class AddressFindHandlers extends require('../../handlers') {
+  constructor (options) {
+    super()
 
-const lookUpOptions = { uri, username, password, key, maxresults: 100 }
+    const {
+      addressLookUpUri: uri,
+      addressLookUpUsername: username,
+      addressLookUpPassword: password,
+      addressLookUpKey: key,
+      addressLookUpEnabled: lookUpEnabled
+    } = options
 
-class AddressFindHandlers extends require('../handlers') {
+    this.lookUpEnabled = lookUpEnabled
+    this.lookUpOptions = { uri, username, password, key, maxresults: 100 }
+  }
+
+  // Using setters and getters allows the "lookUpEnabled" flag to be mocked in tests
+  set lookUpEnabled (lookUpEnabled) {
+    this._lookUpEnabled = lookUpEnabled
+  }
+
+  get lookUpEnabled () {
+    return this._lookUpEnabled
+  }
+
   get maxPostcodeLength () {
     return 8
   }
@@ -44,7 +58,7 @@ class AddressFindHandlers extends require('../handlers') {
 
   async lookUpAddress (postcode) {
     const address = { postcode: this.formattedPostcode(postcode) }
-    const addressLookup = new AddressLookUp(lookUpOptions)
+    const addressLookup = new AddressLookUp(this.lookUpOptions)
     const addresses = await addressLookup.lookUpByPostcode(address.postcode)
     const { errorCode, message } = addresses
     if (errorCode) {
@@ -57,7 +71,7 @@ class AddressFindHandlers extends require('../handlers') {
   // Overrides parent class handleGet
   async handleGet (request, h, errors) {
     const { Address } = this
-    if (!config.addressLookUpEnabled) {
+    if (!this.lookUpEnabled) {
       return h.redirect(this.manualAddressLink)
     }
     const address = await Address.get(request) || {}

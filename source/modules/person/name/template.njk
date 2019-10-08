@@ -1,21 +1,19 @@
-{% extends 'common/two-thirds-layout.njk' %}
-
 {% from "input/macro.njk" import govukInput %}
 
-{% block formContent %}
+{% set errors = params.errors %}
+{% set fullname = params.fullname %}
+{% set fullnameLabel = params.fullnameLabel %}
 
   {{ govukInput({
     name: "full-name",
     id: "full-name",
-    value: viewData['full-name'],
+    value: fullname,
     errorMessage: errors['full-name'],
     autocomplete: "name",
     label: {
-      text: viewData['full-name-label']
+      text: fullnameLabel
     },
     attributes: {
       spellcheck: "false"
     }
   }) }}
-
-{% endblock %}
