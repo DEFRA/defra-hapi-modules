@@ -1,0 +1,38 @@
+{
+  "name": "ivory-common-modules",
+  "version": "0.0.1",
+  "description": "Digital service to support the Ivory Act",
+  "author": "Department for Environment, Food & Rural Affairs",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/DEFRA/ivory-common-modules/issues"
+  },
+  "homepage": "https://github.com/DEFRA/ivory-common-modules#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DEFRA/ivory-common-modules.git"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/standard",
+    "unit-test": "./node_modules/.bin/lab --coverage --reporter console --output stdout --reporter lcov --output lcov.info --reporter html --output coverage.html --verbose",
+    "test": "npm run lint && npm run unit-test"
+  },
+  "devDependencies": {
+    "@hapi/code": "^6.0.0",
+    "@hapi/lab": "^20.2.2",
+    "codeclimate-test-reporter": "0.5.1",
+    "sinon": "^7.4.2",
+    "standard": "14.3.1"
+  },
+  "dependencies": {
+    "@hapi/hoek": "^8.2.5",
+    "@hapi/joi": "^15.1.1",
+    "@hapi/wreck": "^15.1.0",
+    "defra-logging-facade": "git+https://github.com/DEFRA/defra-logging-facade.git#master",
+    "lodash": "^4.17.15"
+  }
+}
