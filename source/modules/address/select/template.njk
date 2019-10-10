@@ -1,0 +1,16 @@
+{% from "select/macro.njk" import govukSelect %}
+
+{% set address = params.address %}
+{% set addresses = params.addresses %}
+{% set errors = params.errors %}
+
+  {{ govukSelect({
+    id: "address",
+    name: "address",
+    value: address,
+    errorMessage: errors['address'],
+    label: {
+      text: "Select an address"
+    },
+    items: addresses
+  }) }}

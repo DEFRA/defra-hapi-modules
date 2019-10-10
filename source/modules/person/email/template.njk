@@ -1,13 +1,15 @@
-{% extends 'common/two-thirds-layout.njk' %}
-
 {% from "input/macro.njk" import govukInput %}
 
-{% block formContent %}
+{% set pageHeading = params.pageHeading %}
+{% set isQuestionPage = params.isQuestionPage %}
+{% set errors = params.errors %}
+{% set email = params.email %}
+{% set emailHint = params.emailHint %}
 
   {{ govukInput({
     name: "email",
     id: "email",
-    value: viewData.email,
+    value: email,
     errorMessage: errors['email'],
     autocomplete: "email",
     label: {
@@ -15,10 +17,8 @@
       isPageHeading: isQuestionPage,
       classes: "govuk-label--xl"
     },
-    hint: viewData.emailHint,
+    hint: emailHint,
     attributes: {
       spellcheck: "false"
     }
   }) }}
-
-{% endblock %}

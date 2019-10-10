@@ -1,29 +1,28 @@
-{% extends 'common/two-thirds-layout.njk' %}
+{% from "input/macro.njk" import govukInput %}
+{% from "fieldset/macro.njk" import govukFieldset %}
 
-{% block formContent %}
-
-  {% from "input/macro.njk" import govukInput %}
-  {% from "fieldset/macro.njk" import govukFieldset %}
+{% set address = params.address %}
+{% set errors = params.errors %}
 
   {% call govukFieldset() %}
 
     {# ToDo: To be removed when we always include the business name #}
-    {% if viewData.includeBusinessName %}
-    {{ govukInput({
-      id: "business-name",
-      name: "business-name",
-      value: viewData['business-name'],
-      errorMessage: errors['business-name'],
-      label: {
-        html: 'Business name (if applicable)'
-      }
-    }) }}
+    {% if address.includeBusinessName %}
+      {{ govukInput({
+        id: "business-name",
+        name: "business-name",
+        value: address['business-name'],
+        errorMessage: errors['business-name'],
+        label: {
+          html: 'Business name (if applicable)'
+        }
+      }) }}
     {% endif %}
 
     {{ govukInput({
       id: "address-line-1",
       name: "address-line-1",
-      value: viewData['address-line-1'],
+      value: address['address-line-1'],
       errorMessage: errors['address-line-1'],
       label: {
         html: 'Building and street <span class="govuk-visually-hidden">line 1 of 2</span>'
@@ -33,7 +32,7 @@
     {{ govukInput({
       id: "address-line-2",
       name: "address-line-2",
-      value: viewData['address-line-2'],
+      value: address['address-line-2'],
       errorMessage: errors['address-line-2'],
       label: {
         html: '<span class="govuk-visually-hidden">Building and street line 2 of 2</span>'
@@ -43,7 +42,7 @@
     {{ govukInput({
       id: "address-town",
       name: "address-town",
-      value: viewData['address-town'],
+      value: address['address-town'],
       errorMessage: errors['address-town'],
       label: {
         text: "Town or city"
@@ -54,7 +53,7 @@
     {{ govukInput({
       id: "address-county",
       name: "address-county",
-      value: viewData['address-county'],
+      value: address['address-county'],
       errorMessage: errors['address-county'],
       label: {
         text: "County"
@@ -65,7 +64,7 @@
     {{ govukInput({
       id: "address-postcode",
       name: "address-postcode",
-      value: viewData['address-postcode'],
+      value: address['address-postcode'],
       errorMessage: errors['address-postcode'],
       label: {
         text: "Postcode"
@@ -74,5 +73,3 @@
     }) }}
 
   {% endcall %}
-
-{% endblock %}

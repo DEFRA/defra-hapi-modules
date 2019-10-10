@@ -1,8 +1,20 @@
 const Joi = require('@hapi/joi')
-const config = require('../../../config')
-const { utils } = require('ivory-shared')
+const { utils } = require('ivory-shared/lib')
 
 class DeclarationHandlers extends require('../handlers') {
+  constructor ({ referenceData }) {
+    super()
+    this._referenceData = referenceData[this.fieldname] || {}
+  }
+
+  get referenceData () {
+    return this._referenceData
+  }
+
+  get choices () {
+    return this.referenceData.choices || []
+  }
+
   get schema () {
     return Joi.object({
       declaration: Joi.string().valid(this.declaration).required(),
@@ -28,7 +40,7 @@ class DeclarationHandlers extends require('../handlers') {
 
   async reference (request) {
     const model = await this.Model.get(request)
-    return config.referenceData[this.fieldname].choices.find(({ shortName }) => shortName === model[this.fieldname])
+    return this.choices.find(({ shortName }) => shortName === model[this.fieldname])
   }
 
   getDeclarationLabel (reference) {

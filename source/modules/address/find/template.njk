@@ -1,0 +1,22 @@
+{% from "input/macro.njk" import govukInput %}
+
+{% set postcode = params.postcode %}
+{% set errors = params.errors %}
+
+  {{ govukInput({
+    name: "postcode",
+    id: "postcode",
+    value: postcode,
+    errorMessage: errors['postcode'],
+    autocomplete: "postcode",
+    label: {
+      text: "UK Postcode"
+    },
+    hint: {
+      text: "For example WA4 1AB"
+    },
+    attributes: {
+      spellcheck: "false"
+    },
+    classes: "govuk-input--width-10 ivory-upper-case"
+  }) }}

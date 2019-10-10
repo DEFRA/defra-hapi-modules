@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi')
 
-class AddressManualHandlers extends require('../handlers') {
+class AddressManualHandlers extends require('../../handlers') {
   get maxAddressLineLength () {
     return 100
   }
