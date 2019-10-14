@@ -69,9 +69,9 @@
       "integrity": "sha512-1dVNHT76Uu5N3eJNTYcvxee+jzX4Z9lfciqRRHCU27ihbUcYi+iSc2iml5Ke1LXe1SyJCLA0+14Jh4tXJgOppA=="
     },
     "@hapi/code": {
-      "version": "6.0.0",
-      "resolved": "https://registry.npmjs.org/@hapi/code/-/code-6.0.0.tgz",
-      "integrity": "sha512-h7fMAMfkhDFVcu4mgIHiuLr03AkWm8zWt6T3kIlTdVWqZ7SK/OeQZBhhbXJ2GAidiCJJ31ilaeOEyCB45sYNrw==",
+      "version": "7.0.0",
+      "resolved": "https://registry.npmjs.org/@hapi/code/-/code-7.0.0.tgz",
+      "integrity": "sha512-fTq1x12vpchD/+9WfxhUbEnlEPVv5QNrsymw9/fSyN/mKNBfQmkv4Ssq3cDgW6mDyN4oiVFJBdLw6jpkmWZ9dQ==",
       "dev": true,
       "requires": {
         "@hapi/hoek": "8.x.x"
@@ -1613,7 +1613,7 @@
       "integrity": "sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo="
     },
     "ivory-shared": {
-      "version": "git+https://github.com/DEFRA/ivory-shared.git#270099a2c6fa14e552c6bf73f991cff9a455a2cf",
+      "version": "git+https://github.com/DEFRA/ivory-shared.git#b251ddf91ffb6be81c5ff89d9acd477ca713a521",
       "from": "git+https://github.com/DEFRA/ivory-shared.git#master",
       "requires": {
         "@hapi/hoek": "^8.3.0",
@@ -1684,9 +1684,9 @@
           "integrity": "sha512-1dVNHT76Uu5N3eJNTYcvxee+jzX4Z9lfciqRRHCU27ihbUcYi+iSc2iml5Ke1LXe1SyJCLA0+14Jh4tXJgOppA=="
         },
         "@hapi/code": {
-          "version": "6.0.0",
-          "resolved": "https://registry.npmjs.org/@hapi/code/-/code-6.0.0.tgz",
-          "integrity": "sha512-h7fMAMfkhDFVcu4mgIHiuLr03AkWm8zWt6T3kIlTdVWqZ7SK/OeQZBhhbXJ2GAidiCJJ31ilaeOEyCB45sYNrw==",
+          "version": "7.0.0",
+          "resolved": "https://registry.npmjs.org/@hapi/code/-/code-7.0.0.tgz",
+          "integrity": "sha512-fTq1x12vpchD/+9WfxhUbEnlEPVv5QNrsymw9/fSyN/mKNBfQmkv4Ssq3cDgW6mDyN4oiVFJBdLw6jpkmWZ9dQ==",
           "requires": {
             "@hapi/hoek": "8.x.x"
           }
