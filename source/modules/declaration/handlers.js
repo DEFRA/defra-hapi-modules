@@ -1,14 +1,11 @@
 const Joi = require('@hapi/joi')
-const { utils } = require('ivory-shared/lib')
+const { getNestedVal } = require('ivory-shared/lib').utils
+const utils = require('../../utils/utils')
 
 class DeclarationHandlers extends require('../handlers') {
-  constructor ({ referenceData }) {
-    super()
-    this._referenceData = referenceData[this.fieldname] || {}
-  }
-
   get referenceData () {
-    return this._referenceData
+    const { config } = utils
+    return config.referenceData[this.fieldname] || {}
   }
 
   get choices () {
@@ -55,7 +52,7 @@ class DeclarationHandlers extends require('../handlers') {
     this.viewData = {
       declaration: this.declaration,
       declarationLabel: await this.getDeclarationLabel(reference),
-      declarationChecked: model[this.declaration] || !!utils.getNestedVal(request, 'payload.declaration'),
+      declarationChecked: model[this.declaration] || !!getNestedVal(request, 'payload.declaration'),
       description: model[this.description],
       descriptionLabel: `Explain how you know ${reference[this.declaration]}`
     }

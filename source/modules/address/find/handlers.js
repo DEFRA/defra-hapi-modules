@@ -1,29 +1,23 @@
 const Joi = require('@hapi/joi')
-const AddressLookUp = require('ivory-shared/lib').AddressLookUp
+const ivoryShared = require('ivory-shared')
+const utils = require('../../../utils/utils')
+const AddressLookUp = ivoryShared.AddressLookUp
 
 class AddressFindHandlers extends require('../../handlers') {
-  constructor (options) {
-    super()
-
+  get lookUpOptions () {
     const {
       addressLookUpUri: uri,
       addressLookUpUsername: username,
       addressLookUpPassword: password,
-      addressLookUpKey: key,
-      addressLookUpEnabled: lookUpEnabled
-    } = options
+      addressLookUpKey: key
+    } = utils.config
 
-    this.lookUpEnabled = lookUpEnabled
-    this.lookUpOptions = { uri, username, password, key, maxresults: 100 }
-  }
-
-  // Using setters and getters allows the "lookUpEnabled" flag to be mocked in tests
-  set lookUpEnabled (lookUpEnabled) {
-    this._lookUpEnabled = lookUpEnabled
+    return { uri, username, password, key, maxresults: 100 }
   }
 
   get lookUpEnabled () {
-    return this._lookUpEnabled
+    const { addressLookUpEnabled = false } = utils.config
+    return addressLookUpEnabled
   }
 
   get maxPostcodeLength () {
@@ -84,12 +78,13 @@ class AddressFindHandlers extends require('../../handlers') {
 
   // Overrides parent class handlePost
   async handlePost (request, h) {
+    const { config } = utils
     const { Address } = this
     let address = await Address.get(request) || {}
     const postcode = this.formattedPostcode(request.payload.postcode)
 
     if (!address.postcodeAddressList || postcode !== this.formattedPostcode(address.postcode)) {
-      address = await this.lookUpAddress(postcode)
+      address = await this.lookUpAddress(postcode, config)
       if (address.postcodeAddressList.message) {
         // Force an invalid postcode error
         const { error } = Joi.object({ postcode: Joi.required() }).validate({})

@@ -1,13 +1,10 @@
 const Joi = require('@hapi/joi')
+const utils = require('../../../utils/utils')
 
 class SingleOptionHandlers extends require('../../handlers') {
-  constructor ({ referenceData }) {
-    super()
-    this._referenceData = referenceData[this.fieldname] || {}
-  }
-
   get referenceData () {
-    return this._referenceData
+    const { config } = utils
+    return config.referenceData[this.fieldname] || {}
   }
 
   get choices () {
