@@ -88,7 +88,20 @@ module.exports = class Handlers {
   }
 
   routes ({ path, app, payload }) {
-    const tags = utils.getNestedVal(app, 'tags') || []
+    const { flow } = app.flow || { }
+    let { next, tags = app.tags || [] } = flow
+    path = flow.path || path
+    next = utils.getNestedVal(flow, next)
+    if (next) {
+      if (next.query) {
+        this.getNextPath = next.query.bind(this)
+      } else {
+        this.getNextPath = () => next.path
+      }
+    }
+    if (tags) {
+      app.tags = tags
+    }
     return [
       {
         method: 'GET',
