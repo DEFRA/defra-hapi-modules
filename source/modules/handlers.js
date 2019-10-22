@@ -60,10 +60,7 @@ module.exports = class Handlers {
     return h.redirect(nextPath)
   }
 
-  errorLink (field, type) {
-    if (type === 'any.required') {
-      return `#${field}-1`
-    }
+  errorLink (field) {
     return `#${field}` // Can be overridden where required
   }
 

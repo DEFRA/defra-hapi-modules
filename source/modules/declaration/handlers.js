@@ -36,7 +36,10 @@ class DeclarationHandlers extends require('../handlers') {
   }
 
   errorLink (field) {
-    return `#${this.referenceData ? `${field}-1` : field}` // If this is a reference data field, then link to first option
+    switch (field) {
+      case 'declaration': return '#declaration-1'
+      default: return `#${field}`
+    }
   }
 
   async reference (request) {
