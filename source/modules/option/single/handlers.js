@@ -41,8 +41,11 @@ class SingleOptionHandlers extends require('../../handlers') {
     return this.Model.set(request, registration)
   }
 
-  errorLink (field) {
-    return `#${this.referenceData ? `${field}-1` : field}` // If this is a reference data field, then link to first option
+  errorLink (field, type) {
+    switch (type) {
+      case 'any.required': return `#${field}-1`
+      default: return `#${field}`
+    }
   }
 
   // Overrides parent class handleGet

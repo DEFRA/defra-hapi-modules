@@ -35,6 +35,13 @@ class DeclarationHandlers extends require('../handlers') {
     }
   }
 
+  errorLink (field) {
+    switch (field) {
+      case 'declaration': return '#declaration-1'
+      default: return `#${field}`
+    }
+  }
+
   async reference (request) {
     const model = await this.Model.get(request)
     return this.choices.find(({ shortName }) => shortName === model[this.fieldname])
