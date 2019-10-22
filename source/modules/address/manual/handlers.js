@@ -22,21 +22,21 @@ class AddressManualHandlers extends require('../../handlers') {
 
   errorMessagesFor (fieldDescription, maxLength = this.maxAddressLineLength) {
     return {
-      'any.empty': `Enter ${fieldDescription}`,
-      'any.required': `Enter ${fieldDescription}`,
-      'string.regex.base': `Enter ${fieldDescription}`,
-      'string.max': `Enter ${fieldDescription} in ${maxLength} characters or less`
+      'any.empty': `Enter ${fieldDescription.toLowerCase()}`,
+      'any.required': `Enter ${fieldDescription.toLowerCase()}`,
+      'string.regex.base': `Enter a valid ${fieldDescription.toLowerCase()}`,
+      'string.max': `${fieldDescription} must be ${maxLength} characters or fewer`
     }
   }
 
   get errorMessages () {
     return {
-      'business-name': this.errorMessagesFor('the business name'),
-      'address-line-1': this.errorMessagesFor('a valid building and street'),
-      'address-line-2': this.errorMessagesFor('the second address line'),
-      'address-town': this.errorMessagesFor('a valid town or city'),
-      'address-county': this.errorMessagesFor('the county'),
-      'address-postcode': this.errorMessagesFor('a valid postcode', this.maxPostcodeLength)
+      'business-name': this.errorMessagesFor('Business name'),
+      'address-line-1': this.errorMessagesFor('Building and street'),
+      'address-line-2': this.errorMessagesFor('Second address line'),
+      'address-town': this.errorMessagesFor('Town or city'),
+      'address-county': this.errorMessagesFor('County'),
+      'address-postcode': this.errorMessagesFor('Postcode', this.maxPostcodeLength)
     }
   }
 
