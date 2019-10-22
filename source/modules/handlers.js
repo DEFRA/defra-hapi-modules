@@ -60,7 +60,10 @@ module.exports = class Handlers {
     return h.redirect(nextPath)
   }
 
-  errorLink (field) {
+  errorLink (field, type) {
+    if (type === 'any.required') {
+      return `#${field}-1`
+    }
     return `#${field}` // Can be overridden where required
   }
 
@@ -72,7 +75,7 @@ module.exports = class Handlers {
       const field = path[0]
       errorMessages[field] = {
         text: typeof this.errorMessages === 'function' ? (await this.errorMessages(request))[field][type] : this.errorMessages[field][type],
-        href: this.errorLink(field)
+        href: this.errorLink(field, type)
       }
       if (!errorMessages[field].text) {
         // use default message if not specified

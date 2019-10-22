@@ -41,10 +41,6 @@ class SingleOptionHandlers extends require('../../handlers') {
     return this.Model.set(request, registration)
   }
 
-  errorLink (field) {
-    return `#${this.referenceData ? `${field}-1` : field}` // If this is a reference data field, then link to first option
-  }
-
   // Overrides parent class handleGet
   async handleGet (request, h, errors) {
     const data = await this.getData(request)

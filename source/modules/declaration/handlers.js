@@ -35,6 +35,10 @@ class DeclarationHandlers extends require('../handlers') {
     }
   }
 
+  errorLink (field) {
+    return `#${this.referenceData ? `${field}-1` : field}` // If this is a reference data field, then link to first option
+  }
+
   async reference (request) {
     const model = await this.Model.get(request)
     return this.choices.find(({ shortName }) => shortName === model[this.fieldname])
