@@ -24,7 +24,7 @@ class AddressManualHandlers extends require('../../handlers') {
     return {
       'any.empty': `Enter ${fieldDescription.toLowerCase()}`,
       'any.required': `Enter ${fieldDescription.toLowerCase()}`,
-      'string.regex.base': `Enter a valid ${fieldDescription.toLowerCase()}`,
+      'string.regex.base': `${fieldDescription.toLowerCase()} must be valid`,
       'string.max': `${fieldDescription} must be ${maxLength} characters or fewer`
     }
   }
