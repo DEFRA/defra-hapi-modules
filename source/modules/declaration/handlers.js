@@ -24,13 +24,13 @@ class DeclarationHandlers extends require('../handlers') {
     const details = reference[this.declaration]
     return {
       declaration: {
-        'any.allowOnly': `You must declare ${details}`,
-        'any.required': `You must declare ${details}`
+        'any.allowOnly': `Select if you declare ${details}`,
+        'any.required': `Select if you declare ${details}`
       },
       description: {
-        'any.empty': `You must explain how you know ${details}`,
-        'any.required': `You must explain how you know ${details}`,
-        'string.max': `You must explain how you know ${details} in less than ${this.maxFreeTextLength} characters`
+        'any.empty': 'Enter an explanation',
+        'any.required': 'Enter an explanation',
+        'string.max': `Explanation must be ${this.maxFreeTextLength} characters or fewer`
       }
     }
   }
