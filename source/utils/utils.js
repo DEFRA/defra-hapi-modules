@@ -1,3 +1,4 @@
+const Joi = require('@hapi/joi')
 let _config
 
 class Utils {
@@ -10,6 +11,16 @@ class Utils {
 
   static setConfig (config) {
     _config = config
+  }
+
+  static createError (request, field, type) {
+    // Generate an example error structure
+    const errors = Joi.validate({ [field]: true }, { [field]: Joi.string() })
+    const [error] = errors.error.details
+    // Replace contents with error we want to create
+    error.message = `"${field}" ${request.response.message}`
+    error.type = type
+    return errors.error
   }
 }
 

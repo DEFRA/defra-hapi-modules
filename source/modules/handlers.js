@@ -29,6 +29,10 @@ module.exports = class Handlers {
     return request.route.settings.app.isQuestionPage || false
   }
 
+  get errorMessages () {
+    throw new Error(`errorMessages have not been configured within the ${this.constructor.name} class`)
+  }
+
   async handleGet (request, h, errors) {
     // The default handleGet
 
