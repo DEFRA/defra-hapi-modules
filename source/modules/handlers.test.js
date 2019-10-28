@@ -134,7 +134,10 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     const payload = {
       data: 'stuff'
     }
-    const routes = handlers.routes({ path, app, payload })
+    const plugins = {
+      plugin: false // disabled plugin
+    }
+    const routes = handlers.routes({ path, app, payload, plugins })
 
     Code.expect(routes).to.equal([
       {
@@ -144,6 +147,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
         options: {
           app,
           tags,
+          plugins,
           bind: handlers
         }
       },
@@ -155,6 +159,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
           {
             app,
             tags,
+            plugins,
             bind: handlers,
             validate: {
               failAction: failAction.bind(handlers),

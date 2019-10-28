@@ -91,7 +91,7 @@ module.exports = class Handlers {
       .takeover()
   }
 
-  routes ({ path, app, payload }) {
+  routes ({ path, app, payload, plugins }) {
     const tags = utils.getNestedVal(app, 'tags') || []
     return [
       {
@@ -101,6 +101,7 @@ module.exports = class Handlers {
         options: {
           app,
           tags,
+          plugins,
           bind: this
         }
       },
@@ -111,6 +112,7 @@ module.exports = class Handlers {
         options: {
           app,
           tags,
+          plugins,
           bind: this,
           validate: {
             payload: this.schema,
