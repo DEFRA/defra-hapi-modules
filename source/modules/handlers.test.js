@@ -5,7 +5,7 @@ const sinon = require('sinon')
 const { createError } = require('../utils/utils')
 const TestHelper = require('../../test-helper')
 
-class Handlers extends require('../modules/handlers') {
+class Handlers extends require('./handlers') {
   get schema () {
     return { config: 'schema config' }
   }
@@ -87,20 +87,14 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     Code.expect(nextPath).to.equal(app.nextPath)
   })
 
-  lab.test('failAction default error structure as expected', async ({ context }) => {
-    const { sandbox, request, handlers, h } = context
+  lab.test('default error structure as expected', async ({ context }) => {
+    const { request, handlers } = context
     const { fieldname } = handlers
-
-    sandbox.stub(Handlers.prototype, 'handleGet').value((request, h, errorMessages) => {
-      return {
-        code: () => { return { takeover: () => errorMessages } }
-      }
-    })
 
     const message = 'default error message'
     request.response = { message }
 
-    const result = await handlers.failAction(request, h, createError(request, fieldname, 'unknown.error.type'))
+    const result = await handlers.formatErrors(request, createError(request, fieldname, 'unknown.error.type'))
 
     Code.expect(result).to.equal({ 'field-name': { text: `"${fieldname}" ${message}`, href: `#${fieldname}` } })
   })

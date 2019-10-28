@@ -41,19 +41,14 @@ class AddressFindHandlers extends require('../../handlers') {
     }
   }
 
-  // Overrides parent class getNextPath
-  async getNextPath () {
-    return this.selectAddressLink
-  }
-
   formattedPostcode (postcode = '') {
     return postcode.toUpperCase().replace(/\s/g, '') // Capitalise and remove spaces
   }
 
   async lookUpAddress (postcode) {
-    const address = { postcode: this.formattedPostcode(postcode) }
+    const address = { postcode }
     const addressLookup = new AddressLookUp(this.lookUpOptions)
-    const addresses = await addressLookup.lookUpByPostcode(address.postcode)
+    const addresses = await addressLookup.lookUpByPostcode(this.formattedPostcode(postcode))
     const { errorCode, message } = addresses
     if (errorCode) {
       throw new Error(message)
@@ -81,9 +76,9 @@ class AddressFindHandlers extends require('../../handlers') {
     const { config } = utils
     const { Address } = this
     let address = await Address.get(request) || {}
-    const postcode = this.formattedPostcode(request.payload.postcode)
+    const postcode = request.payload.postcode
 
-    if (!address.postcodeAddressList || postcode !== this.formattedPostcode(address.postcode)) {
+    if (!address.postcodeAddressList || this.formattedPostcode(postcode) !== this.formattedPostcode(address.postcode)) {
       address = await this.lookUpAddress(postcode, config)
       if (address.postcodeAddressList.message) {
         // Force an invalid postcode error
