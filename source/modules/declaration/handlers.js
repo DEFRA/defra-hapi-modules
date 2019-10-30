@@ -1,15 +1,18 @@
 const Joi = require('@hapi/joi')
 const { getNestedVal } = require('ivory-shared/lib').utils
-const utils = require('../../utils/utils')
+// const utils = require('../../utils/utils')
 
 class DeclarationHandlers extends require('../handlers') {
-  get referenceData () {
-    const { config } = utils
-    return config.referenceData[this.fieldname] || {}
+  async reference () {
+    throw new Error(`"reference" function must be declared in ${this.constructor.name} class`)
   }
 
-  get choices () {
-    return this.referenceData.choices || []
+  get description () {
+    throw new Error(`"description" getter must be declared in ${this.constructor.name} class`)
+  }
+
+  get declaration () {
+    throw new Error(`"declaration" getter must be declared in ${this.constructor.name} class`)
   }
 
   get schema () {
@@ -33,11 +36,6 @@ class DeclarationHandlers extends require('../handlers') {
         'string.max': `Explanation must be ${this.maxFreeTextLength} characters or fewer`
       }
     }
-  }
-
-  async reference (request) {
-    const model = await this.Model.get(request)
-    return this.choices.find(({ shortName }) => shortName === model[this.fieldname])
   }
 
   getDeclarationLabel (reference) {
