@@ -1,4 +1,4 @@
-# Ivory Shared code
+# Ivory Common modules
 
 [![Build Status](https://travis-ci.com/DEFRA/ivory-common-modules.svg?branch=master)](https://travis-ci.com/DEFRA/ivory-common-modules)
 [![Known Vulnerabilities](https://snyk.io/test/github/defra/ivory-common-modules/badge.svg)](https://snyk.io/test/github/defra/ivory-common-modules)
