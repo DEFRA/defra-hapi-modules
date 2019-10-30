@@ -106,7 +106,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     await handlers.Model.set(request, { testField: 'first' })
     const { error } = Joi.validate({}, handlers.schema, { abortEarly: false })
     Code.expect(await handlers.formatErrors(request, error)).to.equal({
-      declaration: { text: 'Select if you declare first declaration', href: '#declaration-1' },
+      declaration: { text: 'Select if you declare first declaration', href: '#declaration' },
       description: { text: 'Enter an explanation', href: '#description' }
     })
   })

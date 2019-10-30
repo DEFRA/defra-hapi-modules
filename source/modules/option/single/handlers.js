@@ -41,13 +41,6 @@ class SingleOptionHandlers extends require('../../handlers') {
     return this.Model.set(request, registration)
   }
 
-  errorLink (field, type) {
-    switch (type) {
-      case 'any.required': return `#${field}-1`
-      default: return `#${field}`
-    }
-  }
-
   // Overrides parent class handleGet
   async handleGet (request, h, errors) {
     const data = await this.getData(request)

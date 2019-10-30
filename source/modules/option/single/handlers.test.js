@@ -117,6 +117,6 @@ lab.experiment(TestHelper.getFile(__filename), () => {
   lab.test('schema validates correctly', async ({ context }) => {
     const { handlers, request } = context
     const { error } = Joi.validate({}, handlers.schema, { abortEarly: false })
-    Code.expect(await handlers.formatErrors(request, error)).to.equal({ testField: { text: handlers.selectError, href: '#testField-1' } })
+    Code.expect(await handlers.formatErrors(request, error)).to.equal({ testField: { text: handlers.selectError, href: '#testField' } })
   })
 })
