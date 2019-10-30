@@ -1,5 +1,4 @@
 const Joi = require('@hapi/joi')
-// const utils = require('../../../utils/utils')
 
 class SingleOptionHandlers extends require('../../handlers') {
   get schema () {

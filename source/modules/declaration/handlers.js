@@ -1,6 +1,5 @@
 const Joi = require('@hapi/joi')
 const { getNestedVal } = require('ivory-shared/lib').utils
-// const utils = require('../../utils/utils')
 
 class DeclarationHandlers extends require('../handlers') {
   async reference () {
