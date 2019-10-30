@@ -4,25 +4,7 @@ const Joi = require('@hapi/joi')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
 const Handlers = require('../../handlers')
-const utils = require('../../../utils/utils')
 const TestHelper = require('../../../../test-helper')
-
-const referenceData = {
-  testField: {
-    hint: 'example hint',
-    choices: [{
-      label: 'first-choice',
-      shortName: 'first',
-      value: 1,
-      hint: 'first choice hint'
-    }, {
-      label: 'second-choice',
-      shortName: 'second',
-      value: 2,
-      hint: 'second choice hint'
-    }]
-  }
-}
 
 class Model {
   static get (request) { return request._data }
@@ -39,6 +21,22 @@ class SingleOptionHandlers extends require('./handlers') {
   }
 
   async onChange () {}
+
+  get items () {
+    return [
+      {
+        value: 'first',
+        text: 'first-choice',
+        hint: 'first choice hint',
+        storedValue: 1
+      }, {
+        value: 'second',
+        text: 'second-choice',
+        hint: 'second choice hint',
+        storedValue: 2
+      }
+    ]
+  }
 }
 
 lab.experiment(TestHelper.getFile(__filename), () => {
@@ -46,7 +44,6 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     // Create a sinon sandbox to stub methods
     const sandbox = context.sandbox = sinon.createSandbox()
 
-    sandbox.stub(utils, 'config').get(() => { return { referenceData } })
     sandbox.stub(Handlers.prototype, 'handleGet').value(() => {})
     sandbox.stub(Handlers.prototype, 'handlePost').value(() => {})
 
