@@ -68,23 +68,30 @@ module.exports = class Handlers {
     return `#${field}` // Can be overridden where required
   }
 
-  async failAction (request, h, errors) {
-    const errorMessages = {}
-
+  async formatErrors (request, errors) {
     // Format the error messages for the view
-    await Promise.all(errors.details.map(async ({ path, type, message }) => {
+    const [...errorMessages] = await Promise.all(errors.details.map(async ({ path, type, message }) => {
       const field = path[0]
-      errorMessages[field] = {
+      const error = {
+        field,
         text: typeof this.errorMessages === 'function' ? (await this.errorMessages(request))[field][type] : this.errorMessages[field][type],
         href: this.errorLink(field, type)
       }
-      if (!errorMessages[field].text) {
+      if (!error.text) {
         // use default message if not specified
-        errorMessages[field].text = message
+        error.text = message
       }
+      return error
     }))
 
-    const result = await this.handleGet(request, h, errorMessages)
+    return Object.values(errorMessages).reduce((prev, { field, text, href }) => {
+      prev[field] = { text, href }
+      return prev
+    }, {})
+  }
+
+  async failAction (request, h, errors) {
+    const result = await this.handleGet(request, h, await this.formatErrors(request, errors))
 
     return result
       .code(400)

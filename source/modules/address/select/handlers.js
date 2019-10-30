@@ -30,7 +30,7 @@ class AddressSelectHandlers extends require('../../handlers') {
           return {
             value: uprn,
             text: addressLine,
-            selected: uprn === address.uprn
+            selected: uprn && uprn === address.uprn
           }
         })),
       manualAddressLink: this.manualAddressLink
