@@ -33,8 +33,8 @@ class AddressFindHandlers extends require('../../handlers') {
   get errorMessages () {
     return {
       postcode: {
-        'any.empty': 'Enter postcode',
         'any.required': 'Enter postcode',
+        'string.empty': 'Enter postcode',
         'string.regex.base': 'Postcode must be valid',
         'string.max': `Postcode must be ${this.maxPostcodeLength} characters or fewer`
       }

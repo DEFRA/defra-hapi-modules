@@ -1,4 +1,5 @@
 const { utils } = require('ivory-shared/lib')
+const Joi = require('@hapi/joi')
 
 module.exports = class Handlers {
   get maxFreeTextLength () {
@@ -31,6 +32,11 @@ module.exports = class Handlers {
 
   get errorMessages () {
     throw new Error(`errorMessages have not been configured within the ${this.constructor.name} class`)
+  }
+
+  validate (...args) {
+    const schema = Joi.isSchema(this.schema) ? this.schema : Joi.object(this.schema)
+    return schema.validate(...args)
   }
 
   async handleGet (request, h, errors) {

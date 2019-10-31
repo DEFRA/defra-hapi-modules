@@ -1,5 +1,6 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
+const Joi = require('@hapi/joi')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
 const { createError } = require('../utils/utils')
@@ -7,7 +8,7 @@ const TestHelper = require('../../test-helper')
 
 class Handlers extends require('./handlers') {
   get schema () {
-    return { config: 'schema config' }
+    return Joi.object({ config: 'schema config' })
   }
 
   get errorMessages () {

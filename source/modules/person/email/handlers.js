@@ -14,7 +14,8 @@ class PersonEmailHandlers extends require('../../handlers') {
   get errorMessages () {
     return {
       email: {
-        'any.empty': 'Enter an email address in the correct format, like name@example.com',
+        'any.required': 'Enter an email address in the correct format, like name@example.com',
+        'string.empty': 'Enter an email address in the correct format, like name@example.com',
         'string.email': 'Enter an email address in the correct format, like name@example.com',
         'string.max': `The email must be ${this.maxEmailAddressLength} characters or fewer`
       }

@@ -26,11 +26,11 @@ class DeclarationHandlers extends require('../handlers') {
     const details = reference[this.declaration]
     return {
       declaration: {
-        'any.allowOnly': `Select if you declare ${details}`,
+        'any.only': `Select if you declare ${details}`,
         'any.required': `Select if you declare ${details}`
       },
       description: {
-        'any.empty': 'Enter an explanation',
+        'string.empty': 'Enter an explanation',
         'any.required': 'Enter an explanation',
         'string.max': `Explanation must be ${this.maxFreeTextLength} characters or fewer`
       }

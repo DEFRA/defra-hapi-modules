@@ -1,6 +1,5 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
-const Joi = require('@hapi/joi')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
 const Handlers = require('../../handlers')
@@ -93,7 +92,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
 
   lab.test('schema validates correctly', async ({ context }) => {
     const { handlers, request } = context
-    const { error } = Joi.validate({ postcode: '' }, handlers.schema, { abortEarly: false })
-    Code.expect(await handlers.formatErrors(request, error)).to.equal({ postcode: { text: 'Postcode must be valid', href: '#postcode' } })
+    const { error } = handlers.validate({ postcode: '' }, { abortEarly: false })
+    Code.expect(await handlers.formatErrors(request, error)).to.equal({ postcode: { text: 'Enter postcode', href: '#postcode' } })
   })
 })

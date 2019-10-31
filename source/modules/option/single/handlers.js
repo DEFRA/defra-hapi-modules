@@ -3,9 +3,9 @@ const Joi = require('@hapi/joi')
 class SingleOptionHandlers extends require('../../handlers') {
   get schema () {
     const validValues = this.items.map(({ value }) => value)
-    return {
+    return Joi.object({
       [this.fieldname]: Joi.string().valid(...validValues).required()
-    }
+    })
   }
 
   get errorMessages () {
