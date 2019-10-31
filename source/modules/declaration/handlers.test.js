@@ -1,6 +1,5 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
-const Joi = require('@hapi/joi')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
 const Handlers = require('../handlers')
@@ -103,7 +102,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
   lab.test('schema validates correctly', async ({ context }) => {
     const { handlers, request } = context
     await handlers.Model.set(request, { testField: 'first' })
-    const { error } = Joi.validate({}, handlers.schema, { abortEarly: false })
+    const { error } = handlers.validate({}, { abortEarly: false })
     Code.expect(await handlers.formatErrors(request, error)).to.equal({
       declaration: { text: 'Select if you declare first declaration', href: '#declaration' },
       description: { text: 'Enter an explanation', href: '#description' }

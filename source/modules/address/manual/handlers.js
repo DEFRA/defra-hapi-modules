@@ -22,7 +22,7 @@ class AddressManualHandlers extends require('../../handlers') {
 
   errorMessagesFor (fieldDescription, maxLength = this.maxAddressLineLength) {
     return {
-      'any.empty': `Enter ${fieldDescription.toLowerCase()}`,
+      'string.empty': `Enter ${fieldDescription.toLowerCase()}`,
       'any.required': `Enter ${fieldDescription.toLowerCase()}`,
       'string.regex.base': `${fieldDescription.toLowerCase()} must be valid`,
       'string.max': `${fieldDescription} must be ${maxLength} characters or fewer`

@@ -14,7 +14,8 @@ class PersonNameHandlers extends require('../../handlers') {
   get errorMessages () {
     return {
       'full-name': {
-        'any.empty': 'Enter your full name',
+        'any.required': 'Enter your full name',
+        'string.empty': 'Enter your full name',
         'string.max': `Enter your full name in ${this.maxNameLength} characters or less`
       }
     }

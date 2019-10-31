@@ -11,7 +11,8 @@ class AddressSelectHandlers extends require('../../handlers') {
   get errorMessages () {
     return {
       address: {
-        'string.min': 'Select an address'
+        'any.required': 'Select an address',
+        'string.empty': 'Select an address'
       }
     }
   }
