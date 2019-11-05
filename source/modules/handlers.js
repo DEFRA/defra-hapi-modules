@@ -1,4 +1,4 @@
-const { utils } = require('ivory-shared/lib')
+const { getNestedVal } = require('ivory-shared/lib').utils
 const Joi = require('@hapi/joi')
 
 module.exports = class Handlers {
@@ -30,6 +30,10 @@ module.exports = class Handlers {
     return request.route.settings.app.isQuestionPage || false
   }
 
+  async getGoogleAnalyticsId (request) {
+    return request.server.app.googleAnalyticsId
+  }
+
   get errorMessages () {
     throw new Error(`errorMessages have not been configured within the ${this.constructor.name} class`)
   }
@@ -46,6 +50,7 @@ module.exports = class Handlers {
     const viewName = await this.getViewName(request)
     const viewData = await this.getViewData(request)
     const isQuestionPage = await this.getIsQuestionPage(request)
+    const googleAnalyticsId = await this.getGoogleAnalyticsId(request)
     const { fieldname } = this
     if (errors) {
       Object.assign(viewData, request.payload)
@@ -53,6 +58,7 @@ module.exports = class Handlers {
     const errorList = errors && Object.values(errors)
 
     return h.view(viewName, {
+      googleAnalyticsId,
       pageHeading,
       isQuestionPage,
       fieldname,
@@ -105,7 +111,7 @@ module.exports = class Handlers {
   }
 
   routes ({ path, app, payload, plugins }) {
-    const tags = utils.getNestedVal(app, 'tags') || []
+    const tags = getNestedVal(app, 'tags') || []
     return [
       {
         method: 'GET',

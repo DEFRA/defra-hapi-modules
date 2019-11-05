@@ -39,9 +39,12 @@ lab.experiment(TestHelper.getFile(__filename), () => {
       tags: ['first', 'second']
     }
 
+    const googleAnalyticsId = 'UA-68732487234'
+
     const settings = { app }
     const route = { settings }
-    const request = { route }
+    const server = { app: { googleAnalyticsId } }
+    const request = { route, server }
 
     const view = (name, data) => {
       // returns view data for checking
@@ -69,6 +72,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
 
     const { pageHeading, isQuestionPage } = app
     const { viewData, fieldname } = handlers
+    const { googleAnalyticsId } = request.server.app
     const errors = undefined
     const errorList = undefined
 
@@ -77,7 +81,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     const result = await handlers.handleGet(request, h)
 
     Code.expect(result).to.equal({
-      'view-name': { pageHeading, isQuestionPage, fieldname, viewData, errors, errorList }
+      'view-name': { pageHeading, isQuestionPage, fieldname, googleAnalyticsId, viewData, errors, errorList }
     })
   })
 
@@ -105,6 +109,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
 
     const { pageHeading, isQuestionPage } = app
     const { viewData, fieldname } = handlers
+    const { googleAnalyticsId } = request.server.app
 
     const errors = { 'field-name': { text: 'error message', href: '#field-name' } }
     const errorList = Object.values(errors)
@@ -114,7 +119,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     const result = await handlers.handleGet(request, h, errors)
 
     Code.expect(result).to.equal({
-      'view-name': { pageHeading, isQuestionPage, fieldname, viewData, errors, errorList }
+      'view-name': { pageHeading, isQuestionPage, fieldname, googleAnalyticsId, viewData, errors, errorList }
     })
 
     // payload should be merged when in error
