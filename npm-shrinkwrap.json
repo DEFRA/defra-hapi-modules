@@ -1763,6 +1763,7 @@
         "@hapi/hoek": "^8.5.0",
         "@hapi/joi": "^16.1.7",
         "@hapi/wreck": "^16.0.1",
+        "defra-logging-facade": "git+https://github.com/DEFRA/defra-logging-facade.git#master",
         "lodash": "^4.17.15"
       },
       "dependencies": {
