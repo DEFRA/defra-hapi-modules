@@ -19,7 +19,7 @@ const errorPages = (server, options = {}) => {
       switch (statusCode) {
         case 403:
         case 404:
-          return h.view(`${errorViewLocation}${statusCode}`).code(statusCode)
+          return h.view(`${errorViewLocation}/${statusCode}`).code(statusCode)
         case 412: {
           return handleFailedPrecondition(request, h)
         }
