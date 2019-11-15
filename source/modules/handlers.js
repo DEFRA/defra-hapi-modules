@@ -112,7 +112,8 @@ module.exports = class Handlers {
 
   routes ({ path, app, payload, plugins }) {
     const tags = getNestedVal(app, 'tags') || []
-    return [
+
+    const routes = [
       {
         method: 'GET',
         path,
@@ -123,8 +124,12 @@ module.exports = class Handlers {
           plugins,
           bind: this
         }
-      },
-      {
+      }
+    ]
+
+    // Only add a post handler if there is a view
+    if (app.view) {
+      routes.push({
         method: 'POST',
         path,
         handler: this.handlePost,
@@ -139,7 +144,9 @@ module.exports = class Handlers {
           },
           payload
         }
-      }
-    ]
+      })
+    }
+
+    return routes
   }
 }
