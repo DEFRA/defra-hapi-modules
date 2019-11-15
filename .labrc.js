@@ -3,7 +3,7 @@ const testFiles = glob.sync('source/**/*.test.js')
 const config = {
   paths: testFiles,
   coverage: true,
-  threshold: 90,
+  threshold: 85,
   'coverage-exclude': testFiles.concat(['test-helper.js']),
   globals: '__core-js_shared__'
 }
