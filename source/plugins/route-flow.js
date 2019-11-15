@@ -1,3 +1,5 @@
+
+const { logger } = require('defra-logging-facade')
 const { getNestedVal } = require('ivory-shared/lib').utils
 
 function parseFlow (flow, subFlow = flow) {
@@ -94,10 +96,14 @@ function getRoutes (node) {
   }
 }
 
-module.exports = (server, options = {}) => {
+module.exports = async (server, options = {}) => {
   const { flowConfig } = options
 
-  parseFlow(flowConfig)
+  if (flowConfig) {
+    parseFlow(flowConfig)
 
-  return registerRoutes(server, options)
+    await registerRoutes(server, options)
+  } else {
+    logger.warn('No flow config was added')
+  }
 }
