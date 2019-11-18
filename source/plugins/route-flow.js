@@ -1,49 +1,52 @@
-
+const { cloneDeep } = require('lodash')
 const { logger } = require('defra-logging-facade')
 const { getNestedVal } = require('ivory-shared/lib').utils
 
-function parseFlow (flow, subFlow = flow) {
-  Object.values(subFlow).forEach((val) => {
-    if (!val.path) {
-      // Must be a sub-flow
-      return parseFlow(flow, val)
-    }
-    switch (typeof val.next) {
-      case 'string': {
-        val.next = getNestedVal(flow, val.next)
-        break
-      }
-      case 'object': {
-        const { query, result } = val.next
-        if (query && result) {
-          Object.entries(result).forEach(([key, val]) => {
-            result[key] = getNestedVal(flow, val)
-          })
-        } else {
-          throw new Error(`Flow config not valid for path: ${val.path}`)
-        }
-        break
-      }
-    }
-  })
-}
+class Flow {
+  constructor (flowConfig, handlersRelativeDir) {
+    this.flowConfig = flowConfig
+    this.handlersRelativeDir = handlersRelativeDir
+  }
 
-async function registerRoutes (server, { config, handlersRelativeDir = '' }) {
-  return Promise.all(Object.values(config).map(async (node) => {
-    if (!node.path) {
-      // Must be a flow
-      return registerRoutes(server, node)
-    } else {
+  _getHandlersClass (node) {
+    return require(`${__dirname}/${this.handlersRelativeDir}/${node.handlers}`)
+  }
+
+  parseFlow (server) {
+    Object.values(this.flowConfig).forEach((node) => {
       if (node.handlers) {
-        const Handlers = require(`${__dirname}/${handlersRelativeDir}/${node.handlers}`)
+        const Handlers = this._getHandlersClass(node)
         const handlers = new Handlers()
 
         const routes = handlers.routes(getRoutes.bind(handlers)(node))
 
+        node.handlers = handlers
+
         routes.forEach((route) => server.route(route))
+      } else {
+        throw new Error(`Expected Flow config to include the handler property for path: ${node.path}`)
       }
-    }
-  }))
+      switch (typeof node.next) {
+        case 'string': {
+          node.next = getNestedVal(this.flowConfig, node.next)
+          break
+        }
+        case 'object': {
+          const { query, result, path } = node.next
+          if (query && result) {
+            Object.entries(result).forEach(([key, val]) => {
+              result[key] = getNestedVal(this.flowConfig, val)
+            })
+          } else {
+            if (!path) {
+              throw new Error(`Flow config not valid for path: ${node.path}`)
+            }
+          }
+          break
+        }
+      }
+    })
+  }
 }
 
 function getRoutes (node) {
@@ -96,14 +99,19 @@ function getRoutes (node) {
   }
 }
 
-module.exports = async (server, options = {}) => {
-  const { flowConfig } = options
+module.exports = {
+  registration: (server, options = {}) => {
+    const { flowConfig, handlersRelativeDir } = options
 
-  if (flowConfig) {
-    parseFlow(flowConfig)
-
-    await registerRoutes(server, options)
-  } else {
-    logger.warn('No flow config was added')
+    if (flowConfig) {
+      this._flow = new Flow(cloneDeep(flowConfig), handlersRelativeDir)
+      this._flow.parseFlow(server)
+    } else {
+      logger.warn('No flow config was added')
+    }
+  },
+  Flow,
+  get flow () {
+    return this._flow
   }
 }
