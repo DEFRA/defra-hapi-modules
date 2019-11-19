@@ -2,10 +2,10 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
-const routeFlow = require('./route-flow').plugin
+const routeFlow = require('./route-flow')
 const { getNestedVal } = require('ivory-shared').utils
 
-const { registration, Flow } = routeFlow
+const { plugin, test } = routeFlow
 
 const flowConfig = {
   home: {
@@ -70,7 +70,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     // Create a sinon sandbox to stub methods
     const sandbox = context.sandbox = sinon.createSandbox()
 
-    sandbox.stub(Flow.prototype, '_getHandlersClass').value(() => Handlers)
+    sandbox.stub(test.Flow.prototype, '_getHandlersClass').value(() => Handlers)
 
     context.server = {
       app: { routes: [] },
@@ -84,7 +84,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     }
 
     const { server, options } = context
-    await registration(server, options)
+    await plugin.register(server, options)
   })
 
   lab.afterEach(async ({ context }) => {
