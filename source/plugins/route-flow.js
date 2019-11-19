@@ -99,7 +99,7 @@ function getRoutes (node) {
   }
 }
 
-module.exports = {
+module.exports.plugin = {
   registration: (server, options = {}) => {
     const { flowConfig, handlersRelativeDir } = options
 

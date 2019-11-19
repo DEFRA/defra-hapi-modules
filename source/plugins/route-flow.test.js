@@ -2,7 +2,7 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
-const routeFlow = require('./route-flow')
+const routeFlow = require('./route-flow').plugin
 const { getNestedVal } = require('ivory-shared').utils
 
 const { registration, Flow } = routeFlow
