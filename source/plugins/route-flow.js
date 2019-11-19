@@ -3,13 +3,13 @@ const { logger } = require('defra-logging-facade')
 const { getNestedVal } = require('ivory-shared/lib').utils
 
 class Flow {
-  constructor (flowConfig, handlersRelativeDir) {
+  constructor (flowConfig, handlersDir) {
     this.flowConfig = flowConfig
-    this.handlersRelativeDir = handlersRelativeDir
+    this.handlersDir = handlersDir
   }
 
   _getHandlersClass (node) {
-    return require(`${__dirname}/${this.handlersRelativeDir}/${node.handlers}`)
+    return require(`${this.handlersDir}/${node.handlers}`)
   }
 
   parseFlow (server) {
@@ -101,10 +101,10 @@ function getRoutes (node) {
 
 const flow = {
   register: (server, options = {}) => {
-    const { flowConfig, handlersRelativeDir } = options
+    const { flowConfig, handlersDir } = options
 
     if (flowConfig) {
-      this._flow = new Flow(cloneDeep(flowConfig), handlersRelativeDir)
+      this._flow = new Flow(cloneDeep(flowConfig), handlersDir)
       this._flow.parseFlow(server)
     } else {
       logger.warn('No flow config was added')
