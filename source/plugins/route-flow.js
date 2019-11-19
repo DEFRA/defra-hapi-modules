@@ -99,8 +99,8 @@ function getRoutes (node) {
   }
 }
 
-module.exports.plugin = {
-  registration: (server, options = {}) => {
+const flow = {
+  register: (server, options = {}) => {
     const { flowConfig, handlersRelativeDir } = options
 
     if (flowConfig) {
@@ -114,4 +114,16 @@ module.exports.plugin = {
   get flow () {
     return this._flow
   }
+}
+
+exports.test = {
+  Flow: flow.Flow
+}
+exports.flow = flow.flow
+
+exports.plugin = {
+  name: 'defra-common-flow',
+  register: flow.register,
+  once: true,
+  pkg: require('../../package.json')
 }
