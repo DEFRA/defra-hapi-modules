@@ -50,48 +50,58 @@ class Flow {
 }
 
 function getRoutes (node) {
-  const { path, next = {}, pageHeading = '', isQuestionPage = false, view, tags = [] } = node
-
-  // Override getNextPath if query specified
-  if (next.query) {
-    const query = this[next.query]
-    if (typeof query === 'function') {
-      this.getNextPath = async (request) => {
-        const val = await query.bind(this)(request)
-        const result = next.result[val.toString()]
-        if (result && result.path) {
-          return result.path
+  // Override getNextPath
+  this.getNextPath = async (request) => {
+    const { next = {} } = node
+    if (next.path) {
+      return next.path
+    }
+    if (next.query) {
+      const query = this[next.query]
+      if (query) {
+        if (typeof query === 'function') {
+          const val = await query.bind(this)(request)
+          const result = next.result[val.toString()]
+          if (result && result.path) {
+            return result.path
+          } else {
+            throw new Error(
+              `Expected route class ${this.constructor.name} to have a result after function "${next.query}" executed`)
+          }
         } else {
-          throw new Error(`Expected route class ${this.constructor.name} to have a result after function "${next.query}" executed`)
+          throw new Error(`Expected route class ${this.constructor.name} to have function "${next.query}" declared`)
         }
       }
-    } else {
-      throw new Error(`Expected route class ${this.constructor.name} to have function "${next.query}" declared`)
     }
   }
 
-  // Override getPageHeading if query specified
-  if (pageHeading && pageHeading.query) {
-    const query = this[pageHeading.query]
-    if (typeof query === 'function') {
-      this.getPageHeading = async (request) => {
+  // Override getPageHeading
+  this.getPageHeading = async (request) => {
+    const { pageHeading } = node
+    if (typeof pageHeading === 'string') {
+      return pageHeading
+    }
+    if (pageHeading.query) {
+      const query = this[pageHeading.query]
+      if (typeof query === 'function') {
         const val = await query.bind(this)(request)
         const result = pageHeading.result[val.toString()]
         if (result) {
           return result
         } else {
-          throw new Error(`Expected route class ${this.constructor.name} to have a result after function "${pageHeading.query}" executed`)
+          throw new Error(
+              `Expected route class ${this.constructor.name} to have a result after function "${pageHeading.query}" executed`)
         }
+      } else {
+        throw new Error(
+          `Expected route class ${this.constructor.name} to have function "${pageHeading.query}" declared`)
       }
-    } else {
-      throw new Error(`Expected route class ${this.constructor.name} to have function "${pageHeading.query}" declared`)
     }
   }
+  const { path, isQuestionPage = false, view, tags = [] } = node
   return {
     path,
     app: {
-      pageHeading: typeof pageHeading === 'string' && pageHeading,
-      nextPath: next.path,
       view,
       isQuestionPage,
       tags
