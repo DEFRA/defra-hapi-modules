@@ -112,6 +112,7 @@ module.exports = class Handlers {
 
   routes ({ path, app, payload, plugins }) {
     const tags = getNestedVal(app, 'tags') || []
+    app.handlers = this
 
     const routes = [
       {
