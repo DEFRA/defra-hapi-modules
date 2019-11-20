@@ -18,6 +18,10 @@ class Handlers extends require('./handlers') {
       }
     }
   }
+
+  get payload () {
+    return { data: 'stuff' }
+  }
 }
 
 lab.experiment(TestHelper.getFile(__filename), () => {
@@ -129,15 +133,12 @@ lab.experiment(TestHelper.getFile(__filename), () => {
   lab.test('routes builds the correct hapi route structure', async ({ context }) => {
     const { app, handlers } = context
     const { tags } = app
-    const { schema, handleGet, handlePost, failAction } = handlers
+    const { schema, handleGet, handlePost, failAction, payload } = handlers
     const path = '/test-path'
-    const payload = {
-      data: 'stuff'
-    }
     const plugins = {
       plugin: false // disabled plugin
     }
-    const routes = handlers.routes({ path, app, payload, plugins })
+    const routes = handlers.routes({ path, app, plugins })
 
     Code.expect(routes).to.equal([
       {

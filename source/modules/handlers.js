@@ -143,7 +143,7 @@ module.exports = class Handlers {
             payload: this.schema,
             failAction: this.failAction.bind(this)
           },
-          payload
+          payload: payload || this.payload
         }
       })
     }

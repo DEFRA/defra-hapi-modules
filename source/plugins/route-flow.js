@@ -75,26 +75,29 @@ function getRoutes (node) {
     }
   }
 
+  const { pageHeading } = node
+
+  if (pageHeading) {
   // Override getPageHeading
-  this.getPageHeading = async (request) => {
-    const { pageHeading } = node
-    if (typeof pageHeading === 'string') {
-      return pageHeading
-    }
-    if (pageHeading.query) {
-      const query = this[pageHeading.query]
-      if (typeof query === 'function') {
-        const val = await query.bind(this)(request)
-        const result = pageHeading.result[val.toString()]
-        if (result) {
-          return result
+    this.getPageHeading = async (request) => {
+      if (typeof pageHeading === 'string') {
+        return pageHeading
+      }
+      if (pageHeading && pageHeading.query) {
+        const query = this[pageHeading.query]
+        if (typeof query === 'function') {
+          const val = await query.bind(this)(request)
+          const result = pageHeading.result[val.toString()]
+          if (result) {
+            return result
+          } else {
+            throw new Error(
+              `Expected route class ${this.constructor.name} to have a result after function "${pageHeading.query}" executed`)
+          }
         } else {
           throw new Error(
-              `Expected route class ${this.constructor.name} to have a result after function "${pageHeading.query}" executed`)
+            `Expected route class ${this.constructor.name} to have function "${pageHeading.query}" declared`)
         }
-      } else {
-        throw new Error(
-          `Expected route class ${this.constructor.name} to have function "${pageHeading.query}" declared`)
       }
     }
   }
@@ -112,6 +115,7 @@ function getRoutes (node) {
 const flow = {
   register: (server, options = {}) => {
     const { flowConfig, handlersDir } = options
+    flow.flowConfig = flowConfig
 
     if (flowConfig) {
       this._flow = new Flow(cloneDeep(flowConfig), handlersDir)
@@ -121,15 +125,16 @@ const flow = {
     }
   },
   Flow,
-  get flow () {
-    return this._flow
+  getPath (routeName) {
+    return flow.flowConfig[routeName].path
   }
 }
 
 exports.test = {
   Flow: flow.Flow
 }
-exports.flow = flow.flow
+
+exports.getPath = flow.getPath
 
 exports.plugin = {
   name: 'defra-common-flow',
