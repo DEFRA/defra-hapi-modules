@@ -118,23 +118,17 @@ const flow = {
     flow.flowConfig = flowConfig
 
     if (flowConfig) {
-      this._flow = new Flow(cloneDeep(flowConfig), handlersDir)
-      this._flow.parseFlow(server)
+      flow._flow = new Flow(cloneDeep(flowConfig), handlersDir)
+      flow._flow.parseFlow(server)
     } else {
       logger.warn('No flow config was added')
     }
   },
   Flow,
   get flow () {
-    return (flow._flow || flow.flowConfig)
+    return flow._flow || flow.flowConfig
   }
 }
-
-exports.test = {
-  Flow: flow.Flow
-}
-
-exports.getPath = flow.getPath
 
 exports.plugin = {
   name: 'defra-common-flow',
@@ -142,3 +136,9 @@ exports.plugin = {
   once: true,
   pkg: require('../../package.json')
 }
+
+exports.test = {
+  Flow: flow.Flow
+}
+
+exports.flow = flow.flow

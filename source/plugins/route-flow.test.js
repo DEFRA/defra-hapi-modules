@@ -5,8 +5,6 @@ const sinon = require('sinon')
 const routeFlow = require('./route-flow')
 const { getNestedVal } = require('ivory-shared').utils
 
-const { plugin, test } = routeFlow
-
 const flowConfig = {
   home: {
     path: '/',
@@ -70,6 +68,7 @@ lab.experiment(TestHelper.getFile(__filename), () => {
     // Create a sinon sandbox to stub methods
     const sandbox = context.sandbox = sinon.createSandbox()
 
+    const { plugin, test } = routeFlow
     sandbox.stub(test.Flow.prototype, '_getHandlersClass').value(() => Handlers)
 
     context.server = {
