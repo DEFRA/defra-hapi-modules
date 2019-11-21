@@ -16,15 +16,26 @@ class Flow {
     Object.values(this.flowConfig).forEach((node) => {
       if (node.handlers) {
         const Handlers = this._getHandlersClass(node)
-        const handlers = new Handlers()
 
-        const routes = handlers.routes(getRoutes.bind(handlers)(node))
+        if (!Handlers) {
+          throw new Error(
+            `Flow config specifies missing handlers (${node.handlers}) for path: ${node.path}`)
+        }
 
-        node.handlers = handlers
+        try {
+          const handlers = new Handlers()
 
-        routes.forEach((route) => server.route(route))
+          const routes = handlers.routes(getRoutes.bind(handlers)(node))
+
+          node.handlers = handlers
+
+          routes.forEach((route) => server.route(route))
+        } catch (e) {
+          throw new Error(
+            `Specified handlers (${node.handlers}) within the flow config for path "${node.path}" has the following error ${e.message}`)
+        }
       } else {
-        throw new Error(`Expected Flow config to include the handler property for path: ${node.path}`)
+        throw new Error(`Expected Flow config to include the handlers property for path: ${node.path}`)
       }
       switch (typeof node.next) {
         case 'string': {
@@ -78,7 +89,7 @@ function getRoutes (node) {
   const { pageHeading } = node
 
   if (pageHeading) {
-  // Override getPageHeading
+    // Override getPageHeading
     this.getPageHeading = async (request) => {
       if (typeof pageHeading === 'string') {
         return pageHeading
