@@ -125,8 +125,8 @@ const flow = {
     }
   },
   Flow,
-  getPath (routeName) {
-    return flow.flowConfig[routeName].path
+  flow (routeName) {
+    return (flow._flow || flow.flowConfig)[routeName]
   }
 }
 
