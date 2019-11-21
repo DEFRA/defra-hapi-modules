@@ -126,7 +126,7 @@ const flow = {
   },
   Flow,
   get flow () {
-    return flow._flow || flow.flowConfig
+    return flow._flow ? flow._flow.flowConfig : flow.flowConfig
   }
 }
 
@@ -141,4 +141,4 @@ exports.test = {
   Flow: flow.Flow
 }
 
-exports.flow = flow.flow
+exports.flow = () => flow.flow
