@@ -46,4 +46,9 @@ const changeYourAnswers = (server, options = {}) => {
   })
 }
 
-module.exports = changeYourAnswers
+exports.plugin = {
+  name: 'defra-change-your-answers',
+  register: changeYourAnswers,
+  once: true,
+  pkg: require('../../package.json')
+}

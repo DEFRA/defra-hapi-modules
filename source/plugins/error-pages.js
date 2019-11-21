@@ -44,4 +44,9 @@ const errorPages = (server, options = {}) => {
   })
 }
 
-module.exports = errorPages
+exports.plugin = {
+  name: 'defra-error-pages',
+  register: errorPages,
+  once: true,
+  pkg: require('../../package.json')
+}
