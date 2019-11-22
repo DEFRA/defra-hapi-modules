@@ -3,9 +3,9 @@ const Code = require('@hapi/code')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
 const Handlers = require('../../handlers')
-const ivoryShared = require('defra-hapi-utils')
+const defraHapiUtils = require('defra-hapi-utils')
 const utils = require('../../../utils/utils')
-const AddressLookUp = ivoryShared.AddressLookUp
+const AddressLookUp = defraHapiUtils.AddressLookUp
 const TestHelper = require('../../../../test-helper')
 
 class Address {
