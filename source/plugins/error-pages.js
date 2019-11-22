@@ -1,6 +1,6 @@
 
 const { logger } = require('defra-logging-facade')
-const { createError } = require('ivory-shared').joiUtilities
+const { createError } = require('defra-hapi-utils').joiUtilities
 
 const errorPages = (server, options = {}) => {
   const {

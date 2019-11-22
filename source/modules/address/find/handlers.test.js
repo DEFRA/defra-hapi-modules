@@ -3,7 +3,7 @@ const Code = require('@hapi/code')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
 const Handlers = require('../../handlers')
-const ivoryShared = require('ivory-shared')
+const ivoryShared = require('defra-hapi-utils')
 const utils = require('../../../utils/utils')
 const AddressLookUp = ivoryShared.AddressLookUp
 const TestHelper = require('../../../../test-helper')

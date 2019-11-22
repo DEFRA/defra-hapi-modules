@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi')
-const ivoryShared = require('ivory-shared')
+const ivoryShared = require('defra-hapi-utils')
 const utils = require('../../../utils/utils')
 const AddressLookUp = ivoryShared.AddressLookUp
 

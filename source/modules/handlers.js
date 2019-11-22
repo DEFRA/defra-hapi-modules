@@ -1,4 +1,4 @@
-const { getNestedVal } = require('ivory-shared/lib').utils
+const { getNestedVal } = require('defra-hapi-utils/lib').utils
 const Joi = require('@hapi/joi')
 
 module.exports = class Handlers {
