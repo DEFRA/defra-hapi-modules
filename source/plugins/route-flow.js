@@ -1,6 +1,6 @@
 const { cloneDeep } = require('lodash')
 const { logger } = require('defra-logging-facade')
-const { getNestedVal } = require('ivory-shared/lib').utils
+const { getNestedVal } = require('defra-hapi-utils/lib').utils
 
 class Flow {
   constructor (flowConfig, handlersDir) {

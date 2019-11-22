@@ -3,7 +3,7 @@ const Code = require('@hapi/code')
 const lab = exports.lab = Lab.script()
 const sinon = require('sinon')
 const routeFlow = require('./route-flow')
-const { getNestedVal } = require('ivory-shared').utils
+const { getNestedVal } = require('defra-hapi-utils').utils
 
 const flowConfig = {
   home: {

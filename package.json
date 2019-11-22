@@ -1,16 +1,16 @@
 {
-  "name": "ivory-common-modules",
+  "name": "defra-hapi-modules",
   "version": "0.1.0",
   "description": "Digital service to support the Ivory Act",
   "author": "Department for Environment, Food & Rural Affairs",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/DEFRA/ivory-common-modules/issues"
+    "url": "https://github.com/DEFRA/defra-hapi-modules/issues"
   },
-  "homepage": "https://github.com/DEFRA/ivory-common-modules#readme",
+  "homepage": "https://github.com/DEFRA/defra-hapi-modules#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DEFRA/ivory-common-modules.git"
+    "url": "https://github.com/DEFRA/defra-hapi-modules.git"
   },
   "engines": {
     "node": "10.x"
@@ -34,7 +34,7 @@
     "@hapi/joi": "^16.1.7",
     "@hapi/wreck": "^16.0.1",
     "defra-logging-facade": "git+https://github.com/DEFRA/defra-logging-facade.git#master",
-    "ivory-shared": "git+https://github.com/DEFRA/ivory-shared.git#master",
+    "defra-hapi-utils": "git+https://github.com/DEFRA/defra-hapi-utils.git#master",
     "lodash": "^4.17.15"
   }
 }
