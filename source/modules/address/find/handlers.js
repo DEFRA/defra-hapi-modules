@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi')
-const ivoryShared = require('defra-hapi-utils')
+const defraHapiUtils = require('defra-hapi-utils')
 const utils = require('../../../utils/utils')
-const AddressLookUp = ivoryShared.AddressLookUp
+const AddressLookUp = defraHapiUtils.AddressLookUp
 
 class AddressFindHandlers extends require('../../handlers') {
   get lookUpOptions () {
