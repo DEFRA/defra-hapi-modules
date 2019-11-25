@@ -23,7 +23,7 @@ class Flow {
         }
 
         try {
-          const handlers = new Handlers()
+          const handlers = new Handlers(server)
 
           const routes = handlers.routes(getRoutes.bind(handlers)(node))
 

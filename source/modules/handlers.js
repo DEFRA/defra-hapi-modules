@@ -2,6 +2,14 @@ const { getNestedVal } = require('defra-hapi-utils/lib').utils
 const Joi = require('@hapi/joi')
 
 module.exports = class Handlers {
+  constructor (server) {
+    this._server = server
+  }
+
+  get server () {
+    return this._server
+  }
+
   get maxFreeTextLength () {
     return 3000
   }
