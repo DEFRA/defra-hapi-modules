@@ -1,6 +1,7 @@
 const { cloneDeep } = require('lodash')
 const { logger } = require('defra-logging-facade')
 const { getNestedVal } = require('defra-hapi-utils/lib').utils
+const Handlers = require('../modules/handlers')
 
 class Flow {
   constructor (flowConfig, handlersDir) {
@@ -12,8 +13,11 @@ class Flow {
     return require(`${this.handlersDir}/${node.handlers}`)
   }
 
-  parseFlow (server) {
-    Object.values(this.flowConfig).forEach((node) => {
+  async parseFlow (server) {
+    // First give access to the server object within handlers
+    Handlers.server = server
+
+    await Promise.all(Object.values(this.flowConfig).map(async (node) => {
       if (node.handlers) {
         const Handlers = this._getHandlersClass(node)
 
@@ -23,7 +27,7 @@ class Flow {
         }
 
         try {
-          const handlers = new Handlers(server)
+          const handlers = new Handlers()
 
           const routes = handlers.routes(getRoutes.bind(handlers)(node))
 
@@ -56,7 +60,7 @@ class Flow {
           break
         }
       }
-    })
+    }))
   }
 }
 
@@ -124,13 +128,13 @@ function getRoutes (node) {
 }
 
 const flow = {
-  register: (server, options = {}) => {
+  register: async (server, options = {}) => {
     const { flowConfig, handlersDir } = options
     flow.flowConfig = flowConfig
 
     if (flowConfig) {
       flow._flow = new Flow(cloneDeep(flowConfig), handlersDir)
-      flow._flow.parseFlow(server)
+      await flow._flow.parseFlow(server)
     } else {
       logger.warn('No flow config was added')
     }
