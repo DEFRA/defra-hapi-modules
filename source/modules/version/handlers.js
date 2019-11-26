@@ -1,7 +1,7 @@
 const { Persistence } = require('defra-hapi-utils')
 const moment = require('moment')
-const { name, homepage, version } = require('../../../package')
 const git = require('git-last-commit')
+const findUp = require('find-up')
 
 class VersionHandlers extends require('../handlers') {
   async getServiceVersions () {
@@ -25,6 +25,7 @@ class VersionHandlers extends require('../handlers') {
         }
       }, { dst: this.repoPath })
     })
+    const { name, homepage, version } = require(await findUp('package.json', this.repoPath))
     Object.assign(commit, { name, version, commit: homepage.replace('#readme', `/commit/${commit.hash}`), instance })
     const services = ([commit].concat(await this.getServiceVersions()).map((service) => {
       const { instance, name, version, commit, hash } = service
