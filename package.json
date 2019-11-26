@@ -1,6 +1,6 @@
 {
   "name": "defra-hapi-modules",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Digital service to support the Ivory Act",
   "author": "Department for Environment, Food & Rural Affairs",
   "license": "SEE LICENSE IN LICENSE",
@@ -35,6 +35,8 @@
     "@hapi/wreck": "^16.0.1",
     "defra-hapi-utils": "git+https://github.com/DEFRA/defra-hapi-utils.git#master",
     "defra-logging-facade": "git+https://github.com/DEFRA/defra-logging-facade.git#master",
-    "lodash": "^4.17.15"
+    "git-last-commit": "^1.0.0",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0"
   }
 }

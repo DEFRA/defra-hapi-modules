@@ -1,0 +1,35 @@
+{% set services = params.services %}
+{% set renderTimestamp = params.renderTimestamp %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% for service in services %}
+        <ul class="govuk-list">
+          <li>
+            <label>Service:</label>
+            <strong id="application-service-{{ service.name }}">{{ service.name }}</strong>
+          </li>
+          <li>
+            <label>Version:</label>
+            <strong id="application-version-{{ service.name }}">{{ service.version }}</strong>
+          </li>
+          <li>
+            <label>Commit hash:</label>
+            <strong>
+              <a id="commit-hash-{{ service.name }}" target="_blank" class="govuk-link" href="{{ service.commit }}">{{ service.hash }}</a>
+            </strong>
+          </li>
+          <li>
+            <label>Started:</label>
+            <strong>{{ service.startedTimestamp }}</strong>
+          </li>
+        </ul>
+      {% endfor %}
+      <ul class="govuk-list">
+        <li>
+          <label>Page rendered:</label>
+          <strong>{{ renderTimestamp }}</strong>
+        </li>
+      </ul>
+    </div>
+  </div>
