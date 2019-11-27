@@ -41,7 +41,7 @@ class SingleOptionHandlers extends require('../../handlers') {
           value: value.toString(),
           text,
           hint: hint ? { text: hint } : undefined,
-          checked: storedValue === data[fieldname]
+          checked: storedValue !== undefined && storedValue === data[fieldname]
         }
       })
     }
