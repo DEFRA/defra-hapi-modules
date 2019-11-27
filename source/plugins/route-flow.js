@@ -4,7 +4,7 @@ const { getNestedVal } = require('defra-hapi-utils/lib').utils
 const Handlers = require('../modules/handlers')
 
 class Flow {
-  constructor (flowConfig, handlersDir) {
+  constructor (server, flowConfig, handlersDir) {
     this.flowConfig = flowConfig
     this.handlersDir = handlersDir
   }
@@ -13,53 +13,61 @@ class Flow {
     return require(`${this.handlersDir}/${node.handlers}`)
   }
 
+  async addRoute (node, server) {
+    if (node.handlers) {
+      const Handlers = this._getHandlersClass(node)
+
+      if (!Handlers) {
+        throw new Error(
+          `Flow config specifies missing handlers (${node.handlers}) for path: ${node.path}`)
+      }
+
+      try {
+        const handlers = new Handlers()
+
+        const routes = handlers.routes(getRoutes.bind(handlers)(node))
+
+        node.handlers = handlers
+
+        routes.forEach((route) => server.route(route))
+      } catch (e) {
+        throw new Error(
+          `Specified handlers (${node.handlers}) within the flow config for path "${node.path}" has the following error ${e.message}`)
+      }
+    } else {
+      throw new Error(`Expected Flow config to include the handlers property for path: ${node.path}`)
+    }
+  }
+
+  parseNext (node) {
+    switch (typeof node.next) {
+      case 'string': {
+        node.next = getNestedVal(this.flowConfig, node.next)
+        break
+      }
+      case 'object': {
+        const { query, result, path } = node.next
+        if (query && result) {
+          Object.entries(result).forEach(([key, val]) => {
+            result[key] = getNestedVal(this.flowConfig, val)
+          })
+        } else {
+          if (!path) {
+            throw new Error(`Flow config not valid for path: ${node.path}`)
+          }
+        }
+        break
+      }
+    }
+  }
+
   async parseFlow (server) {
     // First give access to the server object within handlers
     Handlers.server = server
 
     await Promise.all(Object.values(this.flowConfig).map(async (node) => {
-      if (node.handlers) {
-        const Handlers = this._getHandlersClass(node)
-
-        if (!Handlers) {
-          throw new Error(
-            `Flow config specifies missing handlers (${node.handlers}) for path: ${node.path}`)
-        }
-
-        try {
-          const handlers = new Handlers()
-
-          const routes = handlers.routes(getRoutes.bind(handlers)(node))
-
-          node.handlers = handlers
-
-          routes.forEach((route) => server.route(route))
-        } catch (e) {
-          throw new Error(
-            `Specified handlers (${node.handlers}) within the flow config for path "${node.path}" has the following error ${e.message}`)
-        }
-      } else {
-        throw new Error(`Expected Flow config to include the handlers property for path: ${node.path}`)
-      }
-      switch (typeof node.next) {
-        case 'string': {
-          node.next = getNestedVal(this.flowConfig, node.next)
-          break
-        }
-        case 'object': {
-          const { query, result, path } = node.next
-          if (query && result) {
-            Object.entries(result).forEach(([key, val]) => {
-              result[key] = getNestedVal(this.flowConfig, val)
-            })
-          } else {
-            if (!path) {
-              throw new Error(`Flow config not valid for path: ${node.path}`)
-            }
-          }
-          break
-        }
-      }
+      await this.addRoute(node, server)
+      this.parseNext(node)
     }))
   }
 }
@@ -133,7 +141,7 @@ const flow = {
     flow.flowConfig = flowConfig
 
     if (flowConfig) {
-      flow._flow = new Flow(cloneDeep(flowConfig), handlersDir)
+      flow._flow = new Flow(server, cloneDeep(flowConfig), handlersDir)
       await flow._flow.parseFlow(server)
     } else {
       logger.warn('No flow config was added')
