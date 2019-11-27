@@ -51,7 +51,7 @@ class SingleOptionHandlers extends require('../../handlers') {
   // Overrides parent class handlePost
   async handlePost (request, h) {
     const data = await this.getData(request)
-    const { storedValue } = this.items.find(({ value }) => {
+    const { value, storedValue = value } = this.items.find(({ value }) => {
       return request.payload[this.fieldname] === value
     })
     if (this.onChange && data[this.fieldname] !== storedValue) {
