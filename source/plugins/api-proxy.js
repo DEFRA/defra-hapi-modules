@@ -5,7 +5,7 @@ const register = function (server, options = {}) {
 
   const handler = async (request) => {
     const query = querystring.stringify(request.query)
-    const path = `${serviceApi}${request.path}${query ? `?${query}` : ''}`.replace('/api', '')
+    const path = `${serviceApi}${request.path}${query ? `?${query}` : ''}`.replace(options.path, '')
     const persistence = new Persistence({ path })
     return persistence.restore()
   }
