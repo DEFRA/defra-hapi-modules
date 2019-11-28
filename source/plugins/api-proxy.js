@@ -12,7 +12,7 @@ const register = function (server, options = {}) {
 
   server.route({
     method: 'GET',
-    path,
+    path: `${path}/{model}/{id?}`,
     handler,
     options: { tags }
   })
