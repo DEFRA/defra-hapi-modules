@@ -37,4 +37,8 @@ exports.plugin = {
   pkg: require('../../package.json')
 }
 
-exports.getPhotos = () => photos
+exports.Photos = Photos
+
+exports.getPhotos = () => {
+  return photos
+}
