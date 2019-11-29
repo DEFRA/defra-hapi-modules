@@ -34,6 +34,7 @@ exports.plugin = {
   name: 'defra-aws-photos',
   register,
   once: true,
-  pkg: require('../../package.json'),
-  getPhotos: () => photos
+  pkg: require('../../package.json')
 }
+
+exports.getPhotos = () => photos
