@@ -6,6 +6,7 @@ const register = async function (server, options = {}) {
   const { path = '/photos', originalType = 'original', alternativeSizes = [], region, apiVersion, bucket, tags = [], enabled = true } = options
 
   const sizesAllowed = alternativeSizes.map(({ type: size }) => size)
+  sizesAllowed.push(originalType)
 
   photos = new Photos({ region, apiVersion, bucket, originalType, alternativeSizes, enabled })
 
