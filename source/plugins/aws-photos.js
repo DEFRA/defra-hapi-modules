@@ -1,18 +1,24 @@
+const Boom = require('@hapi/boom')
 const { Photos } = require('defra-hapi-utils')
 
 const register = async function (server, options = {}) {
-  const { path, alternativeSizes, region, apiVersion, bucket, tags, enabled } = options
-  const { small, medium } = alternativeSizes
+  const { path = '/photos', alternativeSizes = [], region, apiVersion, bucket, tags = [], enabled = true } = options
 
-  const photos = new Photos({ region, apiVersion, bucket, small, medium, enabled })
+  const sizesAllowed = alternativeSizes.map(({ type: size }) => size)
+
+  const photos = new Photos({ region, apiVersion, bucket, alternativeSizes, enabled })
 
   const handler = async (request, h) => {
     const filename = encodeURIComponent(request.params.filename)
     const size = encodeURIComponent(request.params.size)
 
-    // Get the photo and return with headers
-    const photo = await photos.get(filename, size)
-    return h.response(photo.Body).type(photo.ContentType)
+    if (sizesAllowed.includes(size)) {
+      // Get the photo and return with headers
+      const photo = await photos.get(filename, size)
+      return h.response(photo.Body).type(photo.ContentType)
+    } else {
+      return Boom.notFound()
+    }
   }
 
   server.route({
