@@ -3,12 +3,12 @@ const { Photos } = require('defra-hapi-utils')
 let photos
 
 const register = async function (server, options = {}) {
-  const { path = '/photos', originalType = 'original', alternativeSizes = [], region, apiVersion, bucket, tags = [], enabled = true } = options
+  const { path = '/photos', originalType = 'original', alternativeSizes = [], maxMb, minKb, payloadMaxBytes, region, apiVersion, bucket, tags = [], enabled = true } = options
 
   const sizesAllowed = alternativeSizes.map(({ type: size }) => size)
   sizesAllowed.push(originalType)
 
-  photos = new Photos({ region, apiVersion, bucket, originalType, alternativeSizes, enabled })
+  photos = new Photos({ region, apiVersion, bucket, originalType, alternativeSizes, maxMb, minKb, payloadMaxBytes, enabled })
 
   const handler = async (request, h) => {
     const filename = encodeURIComponent(request.params.filename)

@@ -15,10 +15,11 @@ class AddPhotographsHandlers extends require('defra-hapi-modules').handlers {
   }
 
   get schema () {
+    const { minKb, maxMb } = this.photos
     const mimeTypes = Object.values(this.validFileTypes).map(({ mimeType }) => mimeType)
     return Joi.object({
       photograph: Joi.object({
-        _data: Joi.binary().min(this.minKb * 1024).max(this.maxMb * 1024 * 1024), // Check the file data buffer size (the important one)
+        _data: Joi.binary().min(minKb * 1024).max(maxMb * 1024 * 1024), // Check the file data buffer size (the important one)
         hapi: Joi.object({
           headers: Joi.object({
             'content-type': Joi.string().valid(...mimeTypes).required() // Check the content-type is set, so we can set it in S3
@@ -31,13 +32,14 @@ class AddPhotographsHandlers extends require('defra-hapi-modules').handlers {
 
   get errorMessages () {
     const fileTypes = Object.keys((this.validFileTypes)).join(', ')
+    const { minKb, maxMb } = this.photos
     return {
       photograph: {
         'string.empty': 'You must add a photo',
         'any.required': 'You must add a photo',
         'any.only': `The selected file must be a ${fileTypes.replace(/,\s([^,]+)$/, ' or $1')}`,
-        'binary.min': `The selected file must be bigger than ${this.minKb}KB`,
-        'binary.max': `The selected file must be smaller than ${this.maxMb}MB`,
+        'binary.min': `The selected file must be bigger than ${minKb}KB`,
+        'binary.max': `The selected file must be smaller than ${maxMb}MB`,
         'custom.uploadfailed': 'The selected file could not be uploaded – try again'
       }
     }
@@ -99,7 +101,7 @@ class AddPhotographsHandlers extends require('defra-hapi-modules').handlers {
       allow: 'multipart/form-data',
       output: 'stream',
       parse: true,
-      maxBytes: this.payloadMaxBytes // Hapi defaults to 1048576 (1MB). Allow the max photo size plus some additional payload data.
+      maxBytes: this.photos.payloadMaxBytes // Hapi defaults to 1048576 (1MB). Allow the max photo size plus some additional payload data.
     }
   }
 }
