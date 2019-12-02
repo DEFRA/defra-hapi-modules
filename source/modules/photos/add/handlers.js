@@ -5,7 +5,7 @@ const { uuid, setNestedVal, getNestedVal } = utils
 const awsPhotos = require('../../../plugins/aws-photos')
 const { createError } = joiUtilities
 
-class AddPhotographsHandlers extends require('defra-hapi-modules').handlers {
+class AddPhotographsHandlers extends require('../../handlers') {
   get validFileTypes () {
     return {
       JPG: { mimeType: 'image/jpeg' },

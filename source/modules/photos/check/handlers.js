@@ -1,4 +1,4 @@
-class ConfirmPhotographHandlers extends require('defra-hapi-modules').handlers {
+class ConfirmPhotographHandlers extends require('../../handlers') {
   // Overrides parent class handleGet
   async handleGet (request, h, errors) {
     const { photos = [] } = await this.Item.get(request) || {}
