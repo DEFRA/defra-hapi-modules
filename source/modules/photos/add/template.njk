@@ -1,0 +1,23 @@
+{% from "file-upload/macro.njk" import govukFileUpload %}
+
+{% set pageHeading = params.pageHeading %}
+{% set isQuestionPage = params.isQuestionPage %}
+{% set errors = params.errors %}
+{% set fieldname = params.fieldname %}
+{% set hint = params.hint %}
+
+  {{ govukFileUpload({
+    name: fieldname,
+    id: fieldname,
+    label: {
+      text: pageHeading,
+      isPageHeading: isQuestionPage,
+      classes: "govuk-label--xl"
+    },
+    hint: hint,
+    errorMessage: errors[fieldname],
+    classes: "ivory-govuk-file-upload",
+    attributes: {
+      accept: "image/*"
+    }
+  }) }}

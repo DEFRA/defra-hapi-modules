@@ -1,0 +1,8 @@
+{% set fieldname = params.fieldname %}
+{% set viewData = params.viewData %}
+
+<div class="govuk-form-group">
+  <p>
+    <img id="{{ fieldname }}" class="defra-check-photo-img" alt="{{ fieldname }}" src="{{ viewData.photoUrl }}" />
+  </p>
+</div>
