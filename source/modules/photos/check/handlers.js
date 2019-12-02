@@ -1,4 +1,8 @@
 class ConfirmPhotographHandlers extends require('../../handlers') {
+  get fieldname () {
+    return 'photograph'
+  }
+
   // Overrides parent class handleGet
   async handleGet (request, h, errors) {
     const { photos = [] } = await this.Item.get(request) || {}

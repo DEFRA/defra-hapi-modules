@@ -6,6 +6,10 @@ const awsPhotos = require('../../../plugins/aws-photos')
 const { createError } = joiUtilities
 
 class AddPhotographsHandlers extends require('../../handlers') {
+  get fieldname () {
+    return 'photograph'
+  }
+
   get validFileTypes () {
     return {
       JPG: { mimeType: 'image/jpeg' },
@@ -18,7 +22,7 @@ class AddPhotographsHandlers extends require('../../handlers') {
     const { minKb, maxMb } = this.photos
     const mimeTypes = Object.values(this.validFileTypes).map(({ mimeType }) => mimeType)
     return Joi.object({
-      photograph: Joi.object({
+      [this.fieldname]: Joi.object({
         _data: Joi.binary().min(minKb * 1024).max(maxMb * 1024 * 1024), // Check the file data buffer size (the important one)
         hapi: Joi.object({
           headers: Joi.object({
@@ -34,7 +38,7 @@ class AddPhotographsHandlers extends require('../../handlers') {
     const fileTypes = Object.keys((this.validFileTypes)).join(', ')
     const { minKb, maxMb } = this.photos
     return {
-      photograph: {
+      [this.fieldname]: {
         'string.empty': 'You must add a photo',
         'any.required': 'You must add a photo',
         'any.only': `The selected file must be a ${fileTypes.replace(/,\s([^,]+)$/, ' or $1')}`,
@@ -57,7 +61,7 @@ class AddPhotographsHandlers extends require('../../handlers') {
 
   // Overrides parent class handlePost
   async handlePost (request, h) {
-    const photoPayload = request.payload.photograph
+    const photoPayload = request.payload[this.fieldname]
     const fileExtension = path.extname(path.basename(photoPayload.hapi.filename))
     const contentType = photoPayload.hapi.headers['content-type']
     const filename = uuid() + fileExtension
@@ -69,7 +73,7 @@ class AddPhotographsHandlers extends require('../../handlers') {
       // The upload failed, so tell the user to try again
       // Rather than building from scratch, generate an example error structure and overwrite the type
       console.log(`Caught error from upload in handler: ${err}`)
-      return this.failAction(request, h, createError(request, 'photograph', 'custom.uploadfailed'))
+      return this.failAction(request, h, createError(request, [this.fieldname], 'custom.uploadfailed'))
     }
 
     // Handle cache and delete/overwrite any previously uploaded photo
