@@ -27,9 +27,12 @@ class Flow {
 
         if (handlers.getPayload) {
           handlers.payload = await handlers.getPayload()
+          console.log(handlers.payload)
         }
 
-        const routes = handlers.routes(getRoutes.bind(handlers)(node))
+        const routesConfig = await getRoutes.bind(handlers)(node)
+
+        const routes = handlers.routes(routesConfig)
 
         node.handlers = handlers
 
