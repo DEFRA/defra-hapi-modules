@@ -25,6 +25,10 @@ class Flow {
       try {
         const handlers = new Handlers()
 
+        if (handlers.getPayload) {
+          handlers.payload = await handlers.getPayload()
+        }
+
         const routes = handlers.routes(getRoutes.bind(handlers)(node))
 
         node.handlers = handlers

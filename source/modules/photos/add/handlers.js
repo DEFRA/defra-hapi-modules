@@ -45,10 +45,6 @@ class AddPhotographsHandlers extends require('../../handlers') {
     }
   }
 
-  get photos () {
-    return awsPhotos.getPhotos()
-  }
-
   // Overrides parent class handleGet
   async handleGet (request, h, errors) {
     const result = await super.handleGet(request, h, errors)
@@ -68,7 +64,8 @@ class AddPhotographsHandlers extends require('../../handlers') {
 
     let filenameUploaded
     try {
-      filenameUploaded = await this.photos.upload(filename, contentType, photoPayload)
+      const photos = await awsPhotos.getPhotos()
+      filenameUploaded = await photos.upload(filename, contentType, photoPayload)
     } catch (err) {
       // The upload failed, so tell the user to try again
       // Rather than building from scratch, generate an example error structure and overwrite the type
@@ -82,7 +79,8 @@ class AddPhotographsHandlers extends require('../../handlers') {
 
     if (getNestedVal(item, 'photos.length')) {
       // There's already a photo, so delete it from storage and overwrite it in the cache/database (reusing the photo id for now until we handle the array create/delete in the services layer)
-      await this.photos.delete(item.photos[0].filename)
+      const photos = await awsPhotos.getPhotos()
+      await photos.delete(item.photos[0].filename)
       item.photos[0].filename = filenameUploaded
       item.photos[0].confirmed = false
     } else {
@@ -96,12 +94,13 @@ class AddPhotographsHandlers extends require('../../handlers') {
     return super.handlePost(request, h)
   }
 
-  get payload () {
+  async getPayload () {
+    const photos = await awsPhotos.getPhotos()
     return { // https://hapi.dev/api/?v=18.4.0#route.options.payload
       allow: 'multipart/form-data',
       output: 'stream',
       parse: true,
-      maxBytes: this.photos.payloadMaxBytes // Hapi defaults to 1048576 (1MB). Allow the max photo size plus some additional payload data.
+      maxBytes: photos.payloadMaxBytes // Hapi defaults to 1048576 (1MB). Allow the max photo size plus some additional payload data.
     }
   }
 }

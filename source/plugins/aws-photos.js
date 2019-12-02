@@ -1,5 +1,5 @@
 const Boom = require('@hapi/boom')
-const { Photos } = require('defra-hapi-utils')
+const { Photos, utils } = require('defra-hapi-utils')
 let photos
 
 const register = async function (server, options = {}) {
@@ -40,6 +40,7 @@ exports.plugin = {
 
 exports.Photos = Photos
 
-exports.getPhotos = () => {
+exports.getPhotos = async () => {
+  await utils.until(() => photos)
   return photos
 }
