@@ -682,13 +682,13 @@
       }
     },
     "defra-hapi-utils": {
-      "version": "git+https://github.com/DEFRA/defra-hapi-utils.git#9e3a446253c3dd169a40b811af3bc2a7234bc9c5",
+      "version": "git+https://github.com/DEFRA/defra-hapi-utils.git#60d7283308828896c7dcb98895cbd7543fff8776",
       "from": "git+https://github.com/DEFRA/defra-hapi-utils.git#master",
       "requires": {
         "@hapi/hoek": "^8.5.0",
         "@hapi/joi": "^16.1.8",
         "@hapi/wreck": "^16.0.1",
-        "aws-sdk": "^2.585.0",
+        "aws-sdk": "^2.586.0",
         "defra-logging-facade": "git+https://github.com/DEFRA/defra-logging-facade.git#master",
         "lodash": "^4.17.15",
         "sharp": "^0.23.4"
@@ -1107,9 +1107,9 @@
           "integrity": "sha1-x57Zf380y48robyXkLzDZkdLS3k="
         },
         "aws-sdk": {
-          "version": "2.585.0",
-          "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.585.0.tgz",
-          "integrity": "sha512-T3JG4JZUmELqxT4hwJa93xns/TWIllaeYoyhRPGwXUj78vhCYJUiigtU6WRYLu84AMoZAGT/pVkARH7vfxpq9Q==",
+          "version": "2.586.0",
+          "resolved": "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.586.0.tgz",
+          "integrity": "sha512-Y5AGW8qRaa81jD1YahzLZLpQY62u3pmi2nlBNDMMR0Z4Ra5H90RgPAomKQe2JX+5Z6fzGFU7nNkYaScsZ6XFqw==",
           "requires": {
             "buffer": "4.9.1",
             "events": "1.1.1",
