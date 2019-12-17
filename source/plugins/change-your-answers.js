@@ -1,5 +1,10 @@
 
 const changeYourAnswers = (server, options = {}) => {
+  const { init } = options
+  if (typeof init === 'function') {
+    init()
+  }
+
   server.ext('onPostAuth', async (request, h) => {
     const { ignoreRoute, checkYourAnswersPath, setChanging } = options
 
