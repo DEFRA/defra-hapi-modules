@@ -1,3 +1,20 @@
+# **DEPRECATED** - no longer actively maintained
+
+Please replace with the following plugins:
+
+    "defra-hapi-change-answers": "git+https://github.com/DEFRA/defra-hapi-change-answers.git#v0.1.0",
+    "defra-hapi-error-handling": "git+https://github.com/DEFRA/defra-hapi-error-handling.git#v0.1.0",
+    "defra-hapi-handlers": "git+https://github.com/DEFRA/defra-hapi-handlers.git#v0.1.0",
+    "defra-hapi-photos": "git+https://github.com/DEFRA/defra-hapi-photos.git#v0.1.0",
+    "defra-hapi-route-flow": "git+https://github.com/DEFRA/defra-hapi-route-flow.git#v0.1.0",
+    "hapi-govuk-frontend": "git+https://github.com/DEFRA/hapi-govuk-frontend.git#master",
+    "hapi-proxy-get": "^0.1.3",
+
+---
+An example of how to use the above can be found in:
+[https://github.com/DEFRA/ivory-front-office](https://github.com/DEFRA/ivory-front-office) 
+
+
 # Ivory Common modules
 
 [![Build Status](https://travis-ci.com/DEFRA/defra-hapi-modules.svg?branch=master)](https://travis-ci.com/DEFRA/defra-hapi-modules)
